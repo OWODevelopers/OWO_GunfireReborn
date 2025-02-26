@@ -1,0 +1,43 @@
+0~Heal~100,1,90,0,0,0,|0%100~weapon-0~#
+1~Jump~100,1,90,0,0,0,|0%100~weapon-0~Movement#
+2~Jump Land~100,1,90,0,0,0,|0%100~weapon-0~Movement#
+3~Dash~100,1,90,0,0,0,|0%100~weapon-0~Movement#
+4~Impact~100,1,90,0,0,0,|0%100~weapon-0~Damage#
+5~Heart Beat~100,1,90,0,0,0,|0%100~health-0~Damage#
+6~Shield Break~100,1,90,0,0,0,|0%100~weapon-0~Damage#
+7~Death~100,1,90,0,0,0,|0%100~weapon-0~Damage#
+8~Recoil L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+9~Recoil R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+10~Charge L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+11~Charge R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+12~Charge LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+13~Cloud Weaver L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+14~Cloud Weaver R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+15~Cloud Weaver LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+16~Continuous L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+17~Continuous R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+18~Continuous LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+19~Crown 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+20~Ao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+21~Qing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+22~Lei 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+23~Tao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+24~Qian 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+25~Xing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+26~Li 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+27~Zi 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+28~Nona 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+29~Lyn 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+30~Momo 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+31~Crown 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+32~Ao 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+33~Qing 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+34~Lei 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+35~Tao 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+36~Qian 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+37~Xing 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+38~Li 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+39~Zi 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+40~Nona 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+41~Lyn 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+42~Momo 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack
