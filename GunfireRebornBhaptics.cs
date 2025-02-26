@@ -1,20 +1,18 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using MyBhapticsTactsuit;
 using BepInEx.IL2CPP;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.Events;
 
-namespace GunfireRebornBhaptics
+namespace OWO_GunfireReborn
 {
     [BepInPlugin("org.bepinex.plugins.OWOGunfireReborn", "OWO GunfireReborn integration", "0.0.1")]
     public class Plugin : BasePlugin
     {
         internal static new ManualLogSource Log;
-        public static TactsuitVR tactsuitVr; 
+        public static OWOSkin tactsuitVr; 
         public static bool chargeWeaponCanShoot = false; 
         public static bool continueWeaponCanShoot = false;
 
@@ -24,7 +22,7 @@ namespace GunfireRebornBhaptics
             Log = base.Log;
             // Plugin startup logic
             //Logger.LogMessage("Plugin GunfireRebornBhaptics is loaded!");
-            tactsuitVr = new TactsuitVR();
+            tactsuitVr = new OWOSkin();
             // one startup heartbeat so you know the vest works correctly
             tactsuitVr.PlaybackHaptics("HeartBeat");
             //delay patching
