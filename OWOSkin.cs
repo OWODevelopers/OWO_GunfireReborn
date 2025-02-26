@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using OWO_GunfireReborn;
 using OWOGame;
 using System.Net;
 using System.Threading.Tasks;
@@ -81,7 +80,7 @@ namespace OWO_GunfireReborn
         {
             LOG("Initializing OWO skin");
 
-            var gameAuth = GameAuth.Create(AllBakedSensations()).WithId("38940112");
+            var gameAuth = GameAuth.Create(AllBakedSensations()).WithId("67884529");
 
             OWO.Configure(gameAuth);
             string[] myIPs = GetIPsFromFile("OWO_Manual_IP.txt");
