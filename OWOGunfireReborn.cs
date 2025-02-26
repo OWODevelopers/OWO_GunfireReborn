@@ -21,7 +21,7 @@ namespace OWO_GunfireReborn
             Log = base.Log;
             owoSkin = new OWOSkin();
 
-            owoSkin.Feel("HeartBeat");
+            owoSkin.Feel("Heart Beat");
             //delay patching
             SceneManager.sceneLoaded += (UnityAction<Scene, LoadSceneMode>)new Action<Scene, LoadSceneMode>(OnSceneLoaded);
         }
