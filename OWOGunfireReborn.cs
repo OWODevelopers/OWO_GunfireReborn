@@ -666,9 +666,11 @@ namespace OWO_GunfireReborn
     public class OWO_OnInjured
     {
         [HarmonyPostfix]
-        public static void Postfix()
+        public static void Postfix(int attid)
         {
             if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.LOG($"HeroInjured: {attid}");
 
             Plugin.owoSkin.Feel("Impact");
             //armor break for heros with armor and no shield
