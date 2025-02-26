@@ -36,7 +36,7 @@ namespace OWO_GunfireReborn
 
         public static string getHandSide(int weaponId)
         {
-            //dog case
+            //dog case - Ao Bai
             if (HeroAttackCtrl.HeroObj.playerProp.SID == 201)
             {
                 NewPlayerObject heroObj = HeroAttackCtrl.HeroObj;
@@ -305,33 +305,46 @@ namespace OWO_GunfireReborn
             }
 
             //heroIds switch cases
+            // Cat    -  Crown Prince
+            // Dog    -  Ao Bai
+            // Falcon -  Qing Yan
+            // Tiger  -  Lei Luo
+            // Bunny  -  Tao
+            // Turtle -  Qian Sui
+            //-------------------- PAID DLCs
+            // Monkey -  Xing Zhe
+            // Fox    -  Li
+            // Owl    -  Zi Xiao
+            // Panda  -  Nona
+            // Goat   -  Lyn
+            // Squirrel - Momo  
             switch (HeroAttackCtrl.HeroObj.playerProp.SID)
             {
-                //dog
+                //dog - Ao Bai
                 case 201:
                     Plugin.owoSkin.Feel("Dog Dual");
                     break;
-                //cat
+                //cat - 
                 case 205:
                     Plugin.owoSkin.Feel("Primary Cat");
                     break;
-                    
-                //monkey
+
+                // monkey - Xing Zhe
                 case 214:
                     Plugin.owoSkin.Feel("Primary Monkey");
                     break;
 
-                //falcon
+                //falcon - Qing Yan
                 case 206:
                     break;
 
-                //tiger
+                //tiger - Lei Luo
                 case 207:
                     //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
                     Plugin.owoSkin.Feel("Primary Tiger");
                     break;
 
-                //turtle
+                //turtle - Qian Sui
                 case 213:
                     if (!continuousPrimaryStart)
                     {
@@ -342,7 +355,7 @@ namespace OWO_GunfireReborn
                     }
                     break;
 
-                //fox
+                //fox - Li
                 case 215:
                     //activation + continuous
                     if (kasuniState == 0)
@@ -377,11 +390,11 @@ namespace OWO_GunfireReborn
             }
         }
     }
-    
-   /**
-    * Stop primary skills continuous effects turtle
-    */
-   [HarmonyPatch(typeof(HeroAttackCtrl), "BreakPower")]
+
+    /**
+     * Stop primary skills continuous effects turtle Qian Sui
+     */
+    [HarmonyPatch(typeof(HeroAttackCtrl), "BreakPower")]
     public class OWO_OnSkillBreak
     {
         [HarmonyPostfix]
@@ -466,18 +479,18 @@ namespace OWO_GunfireReborn
 
             //heroIds switch cases
             switch (HeroAttackCtrl.HeroObj.playerProp.SID)
-            {                
-                //monkey
+            {
+                //monkey - Xing Zhe
                 case 214:
                     Plugin.owoSkin.Feel("Secondary Monkey");
                     break;
 
-                //falcon
+                //falcon - Qing Yan
                 case 206:
                     Plugin.owoSkin.Feel("Secondary Bird");
                     break;
 
-                //tiger
+                //tiger - Lei Luo
                 case 207:
                     Plugin.owoSkin.Feel("Secondary Tiger");
                     break;
@@ -520,11 +533,11 @@ namespace OWO_GunfireReborn
                     Plugin.owoSkin.Feel("Secondary Cat");
                     break;
 
-                //dog
+                //dog 
                 case 201:
                     Plugin.owoSkin.Feel("Secondary Dog");
                     break;
-                //fox
+                // - Li
                 case 215:
                     Plugin.owoSkin.Feel("Secondary Fox");
                     break;
