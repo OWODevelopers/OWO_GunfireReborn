@@ -71,7 +71,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GunfireRebornBhaptics.cs" />
+    <Compile Include="OWOGunfireReborn.cs" />
     <Compile Include="OWOSkin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

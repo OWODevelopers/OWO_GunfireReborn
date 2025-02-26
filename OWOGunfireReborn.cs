@@ -12,19 +12,16 @@ namespace OWO_GunfireReborn
     public class Plugin : BasePlugin
     {
         internal static new ManualLogSource Log;
-        public static OWOSkin tactsuitVr; 
+        public static OWOSkin owoSkin; 
         public static bool chargeWeaponCanShoot = false; 
         public static bool continueWeaponCanShoot = false;
 
         public override void Load()
         {
-            // Make my own logger so it can be accessed from the Tactsuit class
             Log = base.Log;
-            // Plugin startup logic
-            //Logger.LogMessage("Plugin GunfireRebornBhaptics is loaded!");
-            tactsuitVr = new OWOSkin();
-            // one startup heartbeat so you know the vest works correctly
-            tactsuitVr.PlaybackHaptics("HeartBeat");
+            owoSkin = new OWOSkin();
+
+            owoSkin.Feel("HeartBeat");
             //delay patching
             SceneManager.sceneLoaded += (UnityAction<Scene, LoadSceneMode>)new Action<Scene, LoadSceneMode>(OnSceneLoaded);
         }
@@ -32,9 +29,9 @@ namespace OWO_GunfireReborn
         public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             // patch all functions
-            var harmony = new Harmony("bhaptics.patch.GunfireRebornBhaptics");
+            var harmony = new Harmony("owo.patch.OWOGunfireReborn");
             harmony.PatchAll();
-            Plugin.tactsuitVr.StopThreads();
+            Plugin.owoSkin.StopAllHapticFeedback();
         }
 
         public static string getHandSide(int weaponId)
@@ -56,18 +53,18 @@ namespace OWO_GunfireReborn
     */
 
     [HarmonyPatch(typeof(ASBaseShoot), "OnReload")]
-    public class bhaptics_OnReload
+    public class OWO_OnReload
     {
         [HarmonyPostfix]
         public static void Postfix(ASBaseShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
+            if (Plugin.owoSkin.suitDisabled || __instance == null)
             {
                 return;
             }
             if (__instance.ReloadComponent.m_IsReload)
             {
-                Plugin.tactsuitVr.PlaybackHaptics("RecoilArm_" + Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
             }
         }
     }
@@ -76,17 +73,14 @@ namespace OWO_GunfireReborn
      * pistols and derivatives
      */
     [HarmonyPatch(typeof(ASAutoShoot), "AttackOnce")]
-    public class bhaptics_OnFireAutoShoot
+    public class OWO_OnFireAutoShoot
     {
         [HarmonyPostfix]
         public static void Postfix(ASAutoShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.PlaybackHaptics("RecoilVest_" + Plugin.getHandSide(__instance.ItemID));
-            Plugin.tactsuitVr.PlaybackHaptics("RecoilArm_" + Plugin.getHandSide(__instance.ItemID));
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
         }
     }
 
@@ -94,17 +88,14 @@ namespace OWO_GunfireReborn
      * Single shot weapons (snipers, some bows) arms and vest 
      */
     [HarmonyPatch(typeof(ASSingleShoot), "AttackOnce")]
-    public class bhaptics_OnFireSingleShoot
+    public class OWO_OnFireSingleShoot
     {
         [HarmonyPostfix]
         public static void Postfix(ASSingleShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.PlaybackHaptics("RecoilVest_" + Plugin.getHandSide(__instance.ItemID));
-            Plugin.tactsuitVr.PlaybackHaptics("RecoilArm_" + Plugin.getHandSide(__instance.ItemID));
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
         }
     }
 
@@ -112,17 +103,14 @@ namespace OWO_GunfireReborn
      * testing for charged attack once (charging vest, charging arm r) 
      */
     [HarmonyPatch(typeof(ASSingleChargeShoot), "ClearChargeAttack")]
-    public class bhaptics_OnFireSingleChargeShoot
+    public class OWO_OnFireSingleChargeShoot
     {
         [HarmonyPostfix]
         public static void Postfix(ASSingleChargeShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.PlaybackHaptics("ChargedShotVest_" + Plugin.getHandSide(__instance.ItemID));
-            Plugin.tactsuitVr.PlaybackHaptics("ChargedShotArm_" + Plugin.getHandSide(__instance.ItemID));
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+            Plugin.owoSkin.Feel("Charged Shot " + Plugin.getHandSide(__instance.ItemID));
         }
     }
 
@@ -130,20 +118,17 @@ namespace OWO_GunfireReborn
      * Charging weapons effect when charging
      */
     [HarmonyPatch(typeof(ASAutoChargeShoot), "ShootCanAttack")]
-    public class bhaptics_OnFireAutoChargeShoot
+    public class OWO_OnFireAutoChargeShoot
     {
         [HarmonyPostfix]
         public static void Postfix(ASAutoChargeShoot __instance, bool __result)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
             if (__result)
             {
                 Plugin.chargeWeaponCanShoot = true;
-                //start thread
-                Plugin.tactsuitVr.StartChargingWeapon(Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.StartChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
             }
         }
     }
@@ -152,23 +137,20 @@ namespace OWO_GunfireReborn
      * Charging weapons post charging release
      */
     [HarmonyPatch(typeof(ASAutoChargeShoot), "OnUp")]
-    public class bhaptics_OnChargingRelease
+    public class OWO_OnChargingRelease
     {
         [HarmonyPostfix]
         public static void Postfix(ASAutoChargeShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
             if (Plugin.chargeWeaponCanShoot)
             {
                 Plugin.chargeWeaponCanShoot = false;
                 //stop thread
-                Plugin.tactsuitVr.StopChargingWeapon(Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.StopChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
 
-                Plugin.tactsuitVr.PlaybackHaptics("ChargedShotRelease_" + Plugin.getHandSide(__instance.ItemID));
-                Plugin.tactsuitVr.PlaybackHaptics("ChargedShotReleaseArms_" + Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.Feel("Charged Release " + Plugin.getHandSide(__instance.ItemID));
             }
         }
     }
@@ -177,18 +159,16 @@ namespace OWO_GunfireReborn
      * Continue shoot weapons when activating
      */
     [HarmonyPatch(typeof(ASContinueShoot), "StartBulletSkill")]
-    public class bhaptics_OnContinueShoot
+    public class OWO_OnContinueShoot
     {
         [HarmonyPostfix]
         public static void Postfix(ASContinueShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
             Plugin.continueWeaponCanShoot = true;
             //start thread
-            Plugin.tactsuitVr.StartContinueWeapon(Plugin.getHandSide(__instance.ItemID));
+            Plugin.owoSkin.StartContinueWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
         }
     }
 
@@ -196,20 +176,18 @@ namespace OWO_GunfireReborn
      * Continue shoot weapons when stop firing
      */
     [HarmonyPatch(typeof(ASContinueShoot), "EndContinueAttack")]
-    public class bhaptics_OnContinueStop
+    public class OWO_OnContinueStop
     {
         [HarmonyPostfix]
         public static void Postfix(ASContinueShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
             if (Plugin.continueWeaponCanShoot)
             {
                 Plugin.continueWeaponCanShoot = false;
                 //stop thread
-                Plugin.tactsuitVr.StopContinueWeapon(Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.StopContinueWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
             }
         }
     }
@@ -219,19 +197,18 @@ namespace OWO_GunfireReborn
      * using ASBaseShoot.StartBulletSkill to cover only the wildhunt itemSID == 1306
      */
     [HarmonyPatch(typeof(ASBaseShoot), "StartBulletSkill")]
-    public class bhaptics_OnFireDownUpShoot
+    public class OWO_OnFireDownUpShoot
     {
         [HarmonyPostfix]
         public static void Postfix(ASBaseShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
+            if (Plugin.owoSkin.suitDisabled || __instance == null)
             {
                 return;
             }
             if (__instance.ItemSID == 1306)
             {
-                Plugin.tactsuitVr.PlaybackHaptics("RecoilVest_" + Plugin.getHandSide(__instance.ItemID));
-                Plugin.tactsuitVr.PlaybackHaptics("RecoilArm_" + Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
             }
         }
     }
@@ -243,16 +220,14 @@ namespace OWO_GunfireReborn
     // this can only be activated by initiating sword spinning, it will
     // not activate again until cloud weaver is inactive (new zone or switching) 
     [HarmonyPatch(typeof(ASFlyswordShoot), "StartBulletSkill")]
-    public class bhaptics_OnFireFlySwordStart
+    public class OWO_OnFireFlySwordStart
     {
         [HarmonyPostfix]
         public static void Postfix(ASFlyswordShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StartCloudWeaver(Plugin.getHandSide(__instance.ItemID));
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+            Plugin.owoSkin.StartCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
         }
     }
 
@@ -261,16 +236,14 @@ namespace OWO_GunfireReborn
      * when downed, when ui on (scrolls, pause menu, etc)
      */
     [HarmonyPatch(typeof(ASFlyswordShoot), "Destroy")]
-    public class bhaptics_OnFireFlySwordStopHaptics
+    public class OWO_OnFireFlySwordStopHaptics
     {
         [HarmonyPostfix]
         public static void Postfix(ASFlyswordShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StopCloudWeaver(Plugin.getHandSide(__instance.ItemID));
+            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+            
+            Plugin.owoSkin.StopCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
         }
     }
 
@@ -279,17 +252,16 @@ namespace OWO_GunfireReborn
     // may be ideal to change from flyswordvest and flyswordarmwristspinning
     // to recoil variants
     [HarmonyPatch(typeof(ASFlyswordShoot), "FlyswordOnDown")]
-    public class bhaptics_OnFireFlySwordOnDown
+    public class OWO_OnFireFlySwordOnDown
     {
         [HarmonyPostfix]
         public static void Postfix(ASFlyswordShoot __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled || __instance == null)
+            if (Plugin.owoSkin.suitDisabled || __instance == null)
             {
                 return;
             }
-            Plugin.tactsuitVr.PlaybackHaptics("RecoilVest_" + Plugin.getHandSide(__instance.ItemID));
-            Plugin.tactsuitVr.PlaybackHaptics("RecoilArm_" + Plugin.getHandSide(__instance.ItemID));
+            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
         }
     }
     
@@ -297,18 +269,18 @@ namespace OWO_GunfireReborn
      * On switching weapons
      */
     [HarmonyPatch(typeof(HeroAttackCtrl), "OnSwitchWeapon")]
-    public class bhaptics_OnSwitchWeapon
+    public class OWO_OnSwitchWeapon
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
+            if (Plugin.owoSkin.suitDisabled)
             {
                 return;
             }
             
-            Plugin.tactsuitVr.PlaybackHaptics("WeaponSwapArm_R");
-            Plugin.tactsuitVr.StopThreads(true);
+            Plugin.owoSkin.StopAllHapticFeedback();
+            Plugin.owoSkin.Feel("Weapon Swap");
         }
     }
     #endregion
@@ -319,7 +291,7 @@ namespace OWO_GunfireReborn
      * triggering skill on Down
      */
     [HarmonyPatch(typeof(HeroAttackCtrl), "StartActiveSkills")]
-    public class bhaptics_OnPrimarySkillOnDown
+    public class OWO_OnPrimarySkillOnDown
     {
         public static bool continuousPrimaryStart = false;
         public static int kasuniState = 0;
@@ -327,7 +299,7 @@ namespace OWO_GunfireReborn
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
+            if (Plugin.owoSkin.suitDisabled)
             {
                 return;
             }
@@ -337,18 +309,16 @@ namespace OWO_GunfireReborn
             {
                 //dog
                 case 201:
-                    Plugin.tactsuitVr.PlaybackHaptics("DogDualWield");
+                    Plugin.owoSkin.Feel("Dog Dual");
                     break;
                 //cat
                 case 205:
-                    Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillCat");
-                    Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillCatVest");
+                    Plugin.owoSkin.Feel("Primary Cat");
                     break;
                     
                 //monkey
                 case 214:
-                    Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillMonkeyArm");
-                    Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillMonkeyVest");
+                    Plugin.owoSkin.Feel("Primary Monkey");
                     break;
 
                 //falcon
@@ -357,8 +327,8 @@ namespace OWO_GunfireReborn
 
                 //tiger
                 case 207:
-                    Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillTigerVest", true, 4.0f);
-                    Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillTigerArms");
+                    //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
+                    Plugin.owoSkin.Feel("Primary Tiger");
                     break;
 
                 //turtle
@@ -367,8 +337,8 @@ namespace OWO_GunfireReborn
                     {
                         continuousPrimaryStart = true;
                         //start effect
-                        Plugin.tactsuitVr.StartTurtlePrimarySkill();
-                        Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillTurtleVest");
+                        Plugin.owoSkin.Feel("Primary Turtle");
+                        Plugin.owoSkin.StartTurtlePrimarySkill();
                     }
                     break;
 
@@ -377,7 +347,7 @@ namespace OWO_GunfireReborn
                     //activation + continuous
                     if (kasuniState == 0)
                     {
-                        Plugin.tactsuitVr.StartFoxPrimarySkill();
+                        Plugin.owoSkin.StartFoxPrimarySkill();
                         kasuniState = 1;
                         break;
                     }
@@ -385,9 +355,8 @@ namespace OWO_GunfireReborn
                     if (kasuniState == 1)
                     {
                         //stop effect
-                        Plugin.tactsuitVr.StopFoxPrimarySkill();
-                        Plugin.tactsuitVr.PlaybackHaptics("PrimaySkillFoxVestRelease");
-                        Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillFoxArmsRelease");
+                        Plugin.owoSkin.StopFoxPrimarySkill();
+                        Plugin.owoSkin.Feel("Primay Fox Release");
                         kasuniState = 0;
                         break;
                     }
@@ -399,7 +368,7 @@ namespace OWO_GunfireReborn
                     {
                         continuousPrimaryStart = true;
                         //start effect
-                        Plugin.tactsuitVr.StartBunnyPrimarySkill();
+                        Plugin.owoSkin.StartBunnyPrimarySkill();
                     }
                     break;
 
@@ -413,20 +382,17 @@ namespace OWO_GunfireReborn
     * Stop primary skills continuous effects turtle
     */
    [HarmonyPatch(typeof(HeroAttackCtrl), "BreakPower")]
-    public class bhaptics_OnSkillBreak
+    public class OWO_OnSkillBreak
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled) return;
 
-            bhaptics_OnPrimarySkillOnDown.continuousPrimaryStart = false;
-            Plugin.tactsuitVr.StopTurtlePrimarySkill();
-            bhaptics_OnPrimarySkillOnDown.kasuniState=0;
-            Plugin.tactsuitVr.StopFoxPrimarySkill();
+            OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
+            Plugin.owoSkin.StopTurtlePrimarySkill();
+            OWO_OnPrimarySkillOnDown.kasuniState = 0;
+            Plugin.owoSkin.StopFoxPrimarySkill();
         }
     }
 
@@ -434,22 +400,22 @@ namespace OWO_GunfireReborn
     * Stop primary skills continuous effects turtle
     */
     [HarmonyPatch(typeof(SkillBolt.Cartoon1200405), "Active")]
-    public class bhaptics_OnSkillEnd
+    public class OWO_OnSkillEnd
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled || HeroAttackCtrl.HeroObj.playerProp.SID != 213)
+            if (Plugin.owoSkin.suitDisabled || HeroAttackCtrl.HeroObj.playerProp.SID != 213)
             {
                 return;
             }
 
-            if (bhaptics_OnPrimarySkillOnDown.continuousPrimaryStart)
+            if (OWO_OnPrimarySkillOnDown.continuousPrimaryStart)
             {
-                bhaptics_OnPrimarySkillOnDown.continuousPrimaryStart = false;
+                OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                 //stop effect
-                Plugin.tactsuitVr.StopTurtlePrimarySkill();
-                Plugin.tactsuitVr.PlaybackHaptics("PrimarySkillTurtleVest");
+                Plugin.owoSkin.StopTurtlePrimarySkill();
+                Plugin.owoSkin.Feel("Primary Turtle");
             }
         }
     }
@@ -459,27 +425,27 @@ namespace OWO_GunfireReborn
     * Stop primary skills continuous effects bunny
     */
     [HarmonyPatch(typeof(UIScript.HeroSKillLogicBase), "CommonColdDown")]
-    public class bhaptics_OnSkillEndBunny
+    public class OWO_OnSkillEndBunny
     {
         [HarmonyPostfix]
         public static void Postfix(UIScript.HeroSKillLogicBase __instance)
         {
-            if (Plugin.tactsuitVr.suitDisabled)
+            if (Plugin.owoSkin.suitDisabled)
             {
                 return;
             }
             if (HeroAttackCtrl.HeroObj.playerProp.SID == 212)
             {
-                if (bhaptics_OnPrimarySkillOnDown.continuousPrimaryStart)
+                if (OWO_OnPrimarySkillOnDown.continuousPrimaryStart)
                 {
-                    bhaptics_OnPrimarySkillOnDown.continuousPrimaryStart = false;
+                    OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                     //stop effect
-                    Plugin.tactsuitVr.StopBunnyPrimarySkill();
+                    Plugin.owoSkin.StopBunnyPrimarySkill();
                 }
             }
             if (HeroAttackCtrl.HeroObj.playerProp.SID == 201)
             {
-                Plugin.tactsuitVr.StopChargingWeapon("L");
+                Plugin.owoSkin.StopChargingWeapon(false);
             }
         }
     }
@@ -488,12 +454,12 @@ namespace OWO_GunfireReborn
      * Secondary skill on Down
      */
     [HarmonyPatch(typeof(HeroAttackCtrl), "ReadyThrowGrenade")]
-    public class bhaptics_OnSecondarySkillOnDown
+    public class OWO_OnSecondarySkillOnDown
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
+            if (Plugin.owoSkin.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
             {
                 return;
             }
@@ -503,32 +469,27 @@ namespace OWO_GunfireReborn
             {                
                 //monkey
                 case 214:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillMonkeyVest");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillMonkeyArm");
+                    Plugin.owoSkin.Feel("Secondary Monkey");
                     break;
 
                 //falcon
                 case 206:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillBirdArm");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillBirdVest");
+                    Plugin.owoSkin.Feel("Secondary Bird");
                     break;
 
                 //tiger
                 case 207:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillTigerArm");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillTigerVest");
+                    Plugin.owoSkin.Feel("Secondary Tiger");
                     break;
 
                 //turtle
                 case 213:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillTurtleArm");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillTurtleVest");
+                    Plugin.owoSkin.Feel("Secondary Turtle");
                     break;
 
                 //rabbit
                 case 212:                    
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillBunnyArm");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillBunnyVest");
+                    Plugin.owoSkin.Feel("Secondary Bunny");
                     break;
 
                 default:
@@ -541,12 +502,12 @@ namespace OWO_GunfireReborn
      * Secondary skill
      */
     [HarmonyPatch(typeof(HeroAttackCtrl), "ThrowGrenade")]
-    public class bhaptics_OnSecondarySkillOnUp
+    public class OWO_OnSecondarySkillOnUp
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
+            if (Plugin.owoSkin.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
             {
                 return;
             }
@@ -556,19 +517,16 @@ namespace OWO_GunfireReborn
             {
                 //cat
                 case 205:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillCatVest");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillCat");
+                    Plugin.owoSkin.Feel("Secondary Cat");
                     break;
 
                 //dog
                 case 201:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillDogVest");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillCat");
+                    Plugin.owoSkin.Feel("Secondary Dog");
                     break;
                 //fox
                 case 215:
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillFoxArm");
-                    Plugin.tactsuitVr.PlaybackHaptics("SecondarySkillFoxVest");
+                    Plugin.owoSkin.Feel("Secondary Fox");
                     break;
 
                 default:
@@ -579,26 +537,21 @@ namespace OWO_GunfireReborn
 
     #endregion
 
-    #region Secondary skills (grenades)
-
-    #endregion
-
     #region Moves
 
     /**
     * OnJumping
     */
     [HarmonyPatch(typeof(HeroMoveState.HeroMoveMotor), "OnJump")]
-    public class bhaptics_OnJumping
+    public class OWO_OnJumping
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.PlaybackHaptics("OnJump", true, 0.5f);
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
+            Plugin.owoSkin.Feel("On Jump",2, 0.5f);
         }
     }
 
@@ -606,16 +559,15 @@ namespace OWO_GunfireReborn
      * After jumps when touching floor
      */
     [HarmonyPatch(typeof(HeroMoveManager), "OnLand")]
-    public class bhaptics_OnLanding
+    public class OWO_OnLanding
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.PlaybackHaptics("LandAfterJump", true, 0.3f);
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            //Plugin.owoSkin.Feel("Land After Jump", true, 0.3f);
+            Plugin.owoSkin.Feel("Land After Jump", 1, 0.3f);
         }
     }
     
@@ -623,18 +575,16 @@ namespace OWO_GunfireReborn
      * On Dashing
      */
     [HarmonyPatch(typeof(SkillBolt.CAction1310), "Action")]
-    public class bhaptics_OnDashing
+    public class OWO_OnDashing
     {
         [HarmonyPostfix]
         public static void Postfix(SkillBolt.CSkillBase skill)
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled) return;
+
             if (SkillBolt.CServerArg.IsHeroCtrl(skill))
             {
-                Plugin.tactsuitVr.PlaybackHaptics("Dash");
+                Plugin.owoSkin.Feel("Dash");
             }
         }
     }
@@ -647,17 +597,14 @@ namespace OWO_GunfireReborn
      * When Shield breaks
      */
     [HarmonyPatch(typeof(BoltBehavior.CAction46), "Action")]
-    public class bhaptics_OnShieldBreak
+    public class OWO_OnShieldBreak
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.tactsuitVr.PlaybackHaptics("ShieldBreak");
+            Plugin.owoSkin.Feel("Shield Break");
         }
     }
     
@@ -665,19 +612,16 @@ namespace OWO_GunfireReborn
      * When low health starts
      */
     [HarmonyPatch(typeof(HeroBeHitCtrl), "PlayLowHpAndShield")]
-    public class bhaptics_OnLowHealthStart
+    public class OWO_OnLowHealthStart
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled) return;
 
             if (HeroBeHitCtrl.NearlyDeadAction != -1)
             {
-                Plugin.tactsuitVr.StartHeartBeat();
+                Plugin.owoSkin.StartHeartBeat();
             }
         }
     }
@@ -686,16 +630,14 @@ namespace OWO_GunfireReborn
      * When low hp stops
      */
     [HarmonyPatch(typeof(HeroBeHitCtrl), "DelLowHpAndShield")]
-    public class bhaptics_OnLowHealthStop
+    public class OWO_OnLowHealthStop
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StopHeartBeat();
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.StopHeartBeat();
         }
     }
 
@@ -708,31 +650,26 @@ namespace OWO_GunfireReborn
      * Death effect
      */
     [HarmonyPatch(typeof(HeroBeHitCtrl), "HeroInjured")]
-    public class bhaptics_OnInjured
+    public class OWO_OnInjured
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
+            if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.tactsuitVr.PlaybackHaptics("Impact");
+            Plugin.owoSkin.Feel("Impact");
             //armor break for heros with armor and no shield
             PlayerProp playerProp = NewObjectCache.GetPlayerProp(HeroBeHitCtrl.HeroID);
             if (playerProp.ArmorMax > 0 &&  playerProp.Armor <= 0)
             {
-                Plugin.tactsuitVr.PlaybackHaptics("ShieldBreak");
+                Plugin.owoSkin.Feel("Shield Break");
             }
             //death
             if (playerProp.HP <= 0)
             {
-                Plugin.tactsuitVr.StopChargingWeapon("L");
-                Plugin.tactsuitVr.StopChargingWeapon("R");
-                Plugin.tactsuitVr.PlaybackHaptics("Death");
-                Plugin.tactsuitVr.StopThreads();
-                Plugin.tactsuitVr.StartHeartBeat();
+                Plugin.owoSkin.StopAllHapticFeedback();
+                Plugin.owoSkin.Feel("Death");
+                Plugin.owoSkin.StartHeartBeat();
             }
         }
     }
@@ -741,16 +678,14 @@ namespace OWO_GunfireReborn
      * When player gives up after death
      */
     [HarmonyPatch(typeof(UIScript.PCResurgencePanel_Logic), "GiveUp")]
-    public class bhaptics_OnGiveUp
+    public class OWO_OnGiveUp
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StopHeartBeat();
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.StopHeartBeat();
         }
     }
 
@@ -758,16 +693,14 @@ namespace OWO_GunfireReborn
      * When player is NOT back to life, stop heartbeat
      */
     [HarmonyPatch(typeof(SalvationManager), "AskEnterWatch")]
-    public class bhaptics_OnNotRevived
+    public class OWO_OnNotRevived
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StopHeartBeat();
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.StopHeartBeat();
         }
     }
 
@@ -775,16 +708,14 @@ namespace OWO_GunfireReborn
      * When player is back to life, stop heartbeat
      */
     [HarmonyPatch(typeof(NewPlayerManager), "PlayerRelife")]
-    public class bhaptics_OnBackToLife
+    public class OWO_OnBackToLife
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StopHeartBeat();
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.StopHeartBeat();
         }
     }
 
@@ -792,16 +723,14 @@ namespace OWO_GunfireReborn
      * When healing item used
      */
     [HarmonyPatch(typeof(BoltBehavior.CAction1069), "Action")]
-    public class bhaptics_OnHealing
+    public class OWO_OnHealing
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.PlaybackHaptics("Heal");
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.Feel("Heal");
         }
     }
 
@@ -813,16 +742,14 @@ namespace OWO_GunfireReborn
      * When defeating boss, stop all continuous haptics
      */
     [HarmonyPatch(typeof(UIScript.EffectPanel_logic), "DefeatBoss")]
-    public class bhaptics_OnBossDefeat
+    public class OWO_OnBossDefeat
     {
         [HarmonyPostfix]
         public static void Postfix()
         {
-            if (Plugin.tactsuitVr.suitDisabled)
-            {
-                return;
-            }
-            Plugin.tactsuitVr.StopThreads();
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.StopAllHapticFeedback();
         }
     }
 
