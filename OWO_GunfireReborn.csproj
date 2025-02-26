@@ -33,21 +33,27 @@
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>libs\0Harmony.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>libs\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>libs\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx.Core">
       <HintPath>libs\BepInEx.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx.IL2CPP">
       <HintPath>libs\BepInEx.IL2CPP.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Il2Cppmscorlib">
       <HintPath>libs\Il2Cppmscorlib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="OWO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\OWO.2.4.2\lib\net48\OWO.dll</HintPath>
@@ -62,12 +68,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnhollowerBaseLib">
       <HintPath>libs\UnhollowerBaseLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>libs\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>libs\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
