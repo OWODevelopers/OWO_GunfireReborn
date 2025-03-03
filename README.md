@@ -2,7 +2,7 @@
 This mod is based on the work of [Asienth](https://github.com/Astienth/gunfire-reborn-bhaptics).
 
 ## Installation
-### Downgrade the game to the lastest compatible version
+### Downgrade the game to the lastest compatible version (v1.0.9.1)
 - Ejecute on windows `steam://open/console`
 - Run inside Steam Console this command `download_depot 1217060 1217061 969403333909649972`
 - Replace the game files with the download from C:\Program Files (x86)\Steam\steamapps\content\app_1217060\depot_1217061
