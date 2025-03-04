@@ -1,10 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using BepInEx.IL2CPP;
 using UnityEngine.SceneManagement;
-using System;
 using UnityEngine.Events;
+using BepInEx.Unity.IL2CPP;
 
 namespace OWO_GunfireReborn
 {
@@ -22,7 +21,8 @@ namespace OWO_GunfireReborn
             owoSkin = new OWOSkin();
 
             owoSkin.Feel("Heart Beat");
-            //delay patching
+
+            // delay patching
             SceneManager.sceneLoaded += (UnityAction<Scene, LoadSceneMode>)new Action<Scene, LoadSceneMode>(OnSceneLoaded);
         }
 
@@ -756,17 +756,17 @@ namespace OWO_GunfireReborn
     /**
      * When defeating boss, stop all continuous haptics
      */
-    [HarmonyPatch(typeof(UIScript.EffectPanel_logic), "DefeatBoss")]
-    public class OWO_OnBossDefeat
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if (Plugin.owoSkin.suitDisabled) return;
+    //[HarmonyPatch(typeof(UIScript.EffectPanel_logic), "DefeatBoss")]
+    //public class OWO_OnBossDefeat
+    //{
+    //    [HarmonyPostfix]
+    //    public static void Postfix()
+    //    {
+    //        if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.owoSkin.StopAllHapticFeedback();
-        }
-    }
+    //        Plugin.owoSkin.StopAllHapticFeedback();
+    //    }
+    //}
 
     #endregion
 }
