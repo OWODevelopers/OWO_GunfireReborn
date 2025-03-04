@@ -1,6 +1,8 @@
 # Gunfire Reborn OWO mod
 This mod is based on the work of [Asienth](https://github.com/Astienth/gunfire-reborn-bhaptics).
 
+Standalone version with Bepinex 6.0.0 BE 733 IL2CPPx64
+
 ## Installation
 ### Downgrade the game to the latest compatible version (v1.0.9.1)
 - Ejecute on windows `steam://open/console`
