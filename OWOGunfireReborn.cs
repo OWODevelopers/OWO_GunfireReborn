@@ -4,6 +4,7 @@ using HarmonyLib;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using BepInEx.Unity.IL2CPP;
+using DYPublic;
 
 namespace OWO_GunfireReborn
 {
@@ -14,13 +15,12 @@ namespace OWO_GunfireReborn
         public static OWOSkin owoSkin; 
         public static bool chargeWeaponCanShoot = false; 
         public static bool continueWeaponCanShoot = false;
+        private bool gameStarted = false;
 
         public override void Load()
         {
             Log = base.Log;
-            owoSkin = new OWOSkin();
-
-            owoSkin.Feel("Heart Beat");
+            owoSkin = new OWOSkin();            
 
             // delay patching
             SceneManager.sceneLoaded += (UnityAction<Scene, LoadSceneMode>)new Action<Scene, LoadSceneMode>(OnSceneLoaded);
@@ -28,10 +28,12 @@ namespace OWO_GunfireReborn
 
         public void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
+            if (gameStarted) return;
             // patch all functions
             var harmony = new Harmony("owo.patch.OWOGunfireReborn");
             harmony.PatchAll();
             Plugin.owoSkin.StopAllHapticFeedback();
+            gameStarted = true;
         }
 
         public static string getHandSide(int weaponId)
@@ -64,7 +66,7 @@ namespace OWO_GunfireReborn
             }
             if (__instance.ReloadComponent.m_IsReload)
             {
-                Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.Feel("Reload " + Plugin.getHandSide(__instance.ItemID));
             }
         }
     }
@@ -271,9 +273,16 @@ namespace OWO_GunfireReborn
     [HarmonyPatch(typeof(HeroAttackCtrl), "OnSwitchWeapon")]
     public class OWO_OnSwitchWeapon
     {
+        [HarmonyBefore]
+        public static void Prefix() {
+            Plugin.owoSkin.LOG("<CAMBIO DE ARMA> Prefix");
+        }
+
         [HarmonyPostfix]
         public static void Postfix()
         {
+            Plugin.owoSkin.LOG("<CAMBIO DE ARMA> Postfix");
+
             if (Plugin.owoSkin.suitDisabled)
             {
                 return;
@@ -576,7 +585,7 @@ namespace OWO_GunfireReborn
         public static void Postfix()
         {
             if (Plugin.owoSkin.suitDisabled) return;
-
+            Plugin.owoSkin.LOG("ASFASDFASDFSDFASDFASDF");
             //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
             Plugin.owoSkin.Feel("Jump",2, 0.5f);
         }

@@ -90,7 +90,7 @@ namespace OWO_GunfireReborn
             {
                 suitDisabled = false;
                 LOG("OWO suit connected.");
-                Feel("Heartbeat");
+                Feel("Heart Beat");
             }
             if (suitDisabled) LOG("OWO is not enabled?!?!");
         }
