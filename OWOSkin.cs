@@ -353,7 +353,7 @@ namespace OWO_GunfireReborn
         {
             while (qianPrimarySkillIsActive)
             {
-                Feel("Turtle Primary", 0);
+                Feel("Qian 1st", 0);
                 await Task.Delay(1000);
             }
         }
@@ -382,7 +382,7 @@ namespace OWO_GunfireReborn
                 await Task.Delay(500);
             }
         }
-        public void StartFoxPrimarySkill()
+        public void StartLiPrimarySkill()
         {
             if (liPrimarySkillIsActive) return;
 
@@ -390,7 +390,7 @@ namespace OWO_GunfireReborn
             LiPrimarySkillFuncAsync();
         }
 
-        public void StopFoxPrimarySkill()
+        public void StopLiPrimarySkill()
         {
             liPrimarySkillIsActive = false;
         }
@@ -402,7 +402,7 @@ namespace OWO_GunfireReborn
             StopHeartBeat();
             StopTaoPrimarySkill();
             StopTurtlePrimarySkill();
-            StopFoxPrimarySkill();
+            StopLiPrimarySkill();
             StopChargingWeapon(true);
             StopChargingWeapon(false);
             StopCloudWeaver(true);

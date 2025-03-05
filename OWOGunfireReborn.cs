@@ -110,7 +110,7 @@ namespace OWO_GunfireReborn
         {
             if (Plugin.owoSkin.suitDisabled || __instance == null) return;
 
-            Plugin.owoSkin.Feel("Charged Shot " + Plugin.getHandSide(__instance.ItemID));
+            Plugin.owoSkin.Feel("Charge " + Plugin.getHandSide(__instance.ItemID));
         }
     }
 
@@ -361,7 +361,7 @@ namespace OWO_GunfireReborn
                     //activation + continuous
                     if (kasuniState == 0)
                     {
-                        Plugin.owoSkin.StartFoxPrimarySkill();
+                        Plugin.owoSkin.StartLiPrimarySkill();
                         kasuniState = 1;
                         break;
                     }
@@ -369,8 +369,8 @@ namespace OWO_GunfireReborn
                     if (kasuniState == 1)
                     {
                         //stop effect
-                        Plugin.owoSkin.StopFoxPrimarySkill();
-                        Plugin.owoSkin.Feel("Primay Fox Release");
+                        Plugin.owoSkin.StopLiPrimarySkill();
+                        Plugin.owoSkin.Feel("Li 1st Release");
                         kasuniState = 0;
                         break;
                     }
@@ -406,7 +406,7 @@ namespace OWO_GunfireReborn
             OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
             Plugin.owoSkin.StopTurtlePrimarySkill();
             OWO_OnPrimarySkillOnDown.kasuniState = 0;
-            Plugin.owoSkin.StopFoxPrimarySkill();
+            Plugin.owoSkin.StopLiPrimarySkill();
         }
     }
 
@@ -429,7 +429,7 @@ namespace OWO_GunfireReborn
                 OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                 //stop effect
                 Plugin.owoSkin.StopTurtlePrimarySkill();
-                Plugin.owoSkin.Feel("Primary Turtle");
+                Plugin.owoSkin.Feel("Qian 1st");
             }
         }
     }
@@ -479,31 +479,44 @@ namespace OWO_GunfireReborn
             }
 
             //heroIds switch cases
+            // Cat    -  Crown Prince
+            // Dog    -  Ao Bai
+            // Falcon -  Qing Yan
+            // Tiger  -  Lei Luo
+            // Bunny  -  Tao
+            // Turtle -  Qian Sui
+            //-------------------- PAID DLCs
+            // Monkey -  Xing Zhe
+            // Fox    -  Li
+            // Owl    -  Zi Xiao
+            // Panda  -  Nona
+            // Goat   -  Lyn
+            // Squirrel - Momo 
             switch (HeroAttackCtrl.HeroObj.playerProp.SID)
             {
                 //monkey - Xing Zhe
                 case 214:
-                    Plugin.owoSkin.Feel("Secondary Monkey");
+                    Plugin.owoSkin.Feel("Xing 2nd");
                     break;
 
                 //falcon - Qing Yan
                 case 206:
-                    Plugin.owoSkin.Feel("Secondary Bird");
+                    Plugin.owoSkin.Feel("Qing 2nd");
                     break;
 
                 //tiger - Lei Luo
                 case 207:
-                    Plugin.owoSkin.Feel("Secondary Tiger");
+                    Plugin.owoSkin.Feel("Lei 2nd");
                     break;
 
-                //turtle
+                //turtle - Qian
                 case 213:
-                    Plugin.owoSkin.Feel("Secondary Turtle");
+                    Plugin.owoSkin.Feel("Qian 2nd");
                     break;
 
-                //rabbit
+                //rabbit - Tao
                 case 212:                    
-                    Plugin.owoSkin.Feel("Secondary Bunny");
+                    Plugin.owoSkin.Feel("Tao 2nd");
                     break;
 
                 default:
@@ -531,16 +544,16 @@ namespace OWO_GunfireReborn
             {
                 //cat
                 case 205:
-                    Plugin.owoSkin.Feel("Secondary Cat");
+                    Plugin.owoSkin.Feel("Crown 2nd");
                     break;
 
                 //dog 
                 case 201:
-                    Plugin.owoSkin.Feel("Secondary Dog");
+                    Plugin.owoSkin.Feel("Ao 2nd");
                     break;
                 // - Li
                 case 215:
-                    Plugin.owoSkin.Feel("Secondary Fox");
+                    Plugin.owoSkin.Feel("Li 2nd");
                     break;
 
                 default:
@@ -565,7 +578,7 @@ namespace OWO_GunfireReborn
             if (Plugin.owoSkin.suitDisabled) return;
 
             //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
-            Plugin.owoSkin.Feel("On Jump",2, 0.5f);
+            Plugin.owoSkin.Feel("Jump",2, 0.5f);
         }
     }
 
@@ -581,7 +594,7 @@ namespace OWO_GunfireReborn
             if (Plugin.owoSkin.suitDisabled) return;
 
             //Plugin.owoSkin.Feel("Land After Jump", true, 0.3f);
-            Plugin.owoSkin.Feel("Land After Jump", 1, 0.3f);
+            Plugin.owoSkin.Feel("Jump Land", 1, 0.3f);
         }
     }
     
@@ -676,10 +689,10 @@ namespace OWO_GunfireReborn
             Plugin.owoSkin.Feel("Impact");
             //armor break for heros with armor and no shield
             PlayerProp playerProp = NewObjectCache.GetPlayerProp(HeroBeHitCtrl.HeroID);
-            if (playerProp.ArmorMax > 0 &&  playerProp.Armor <= 0)
-            {
-                Plugin.owoSkin.Feel("Shield Break");
-            }
+            //if (playerProp.ArmorMax > 0 &&  playerProp.Armor <= 0)
+            //{
+            //    Plugin.owoSkin.Feel("Shield Break");
+            //}
             //death
             if (playerProp.HP <= 0)
             {
