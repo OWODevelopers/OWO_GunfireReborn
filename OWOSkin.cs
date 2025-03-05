@@ -18,9 +18,9 @@ namespace OWO_GunfireReborn
         private static bool CloudWeaverIsActive = false;
         private static bool CloudWeaverRIsActive = false;
         private static bool CloudWeaverLIsActive = false;
-        private static bool turtlePrimarySkillIsActive = false;
-        private static bool foxPrimarySkillIsActive = false;
-        private static bool bunnyPrimarySkillIsActive = false;
+        private static bool qianPrimarySkillIsActive = false;
+        private static bool liPrimarySkillIsActive = false;
+        private static bool taoPrimarySkillIsActive = false;
 
         public Dictionary<String, Sensation> FeedbackMap = new Dictionary<string, Sensation>();
 
@@ -150,7 +150,7 @@ namespace OWO_GunfireReborn
         {
             while (heartBeatIsActive)
             {
-                Feel("Heartbeat", 0);
+                Feel("Heart Beat", 0);
                 await Task.Delay(1000);
             }
         }
@@ -228,13 +228,13 @@ namespace OWO_GunfireReborn
             while (ChargingWeaponLIsActive || ChargingWeaponRIsActive)
             {
                 if (ChargingWeaponRIsActive)
-                    toFeel = "Charging Weapon R";
+                    toFeel = "Charging R";
 
                 if (CloudWeaverLIsActive)
-                    toFeel = "Charging Weapon L";
+                    toFeel = "Charging L";
 
                 if (ChargingWeaponLIsActive && ChargingWeaponRIsActive)
-                    toFeel = "Charging Weapon LR";
+                    toFeel = "Charging LR";
 
                 Feel(toFeel, 2);
                 await Task.Delay(1000);
@@ -279,13 +279,13 @@ namespace OWO_GunfireReborn
             while (ContinueWeaponLIsActive || ContinueWeaponRIsActive)
             {
                 if (ContinueWeaponRIsActive)
-                    toFeel = "Continue Weapon R";
+                    toFeel = "Continuous R";
 
                 if (CloudWeaverLIsActive)
-                    toFeel = "Continue Weapon L";
+                    toFeel = "Continuous L";
 
                 if (ContinueWeaponLIsActive && ContinueWeaponRIsActive)
-                    toFeel = "Continue Weapon LR";
+                    toFeel = "Continuous LR";
 
                 Feel(toFeel, 2);
                 await Task.Delay(400);
@@ -322,77 +322,77 @@ namespace OWO_GunfireReborn
 
         #endregion
 
-        #region BunnyPrimarySkill
+        #region TaoPrimarySkill
 
-        public async Task BunnyPrimarySkillFuncAsync()
+        public async Task TaoPrimarySkillFuncAsync()
         {
-            while (bunnyPrimarySkillIsActive)
+            while (taoPrimarySkillIsActive)
             {
-                Feel("Bunny Primary", 0);
+                Feel("Tao 1st", 0);
                 await Task.Delay(600);
             }
         }
-        public void StartBunnyPrimarySkill()
+        public void StartTaoPrimarySkill()
         {
-            if (bunnyPrimarySkillIsActive) return;
+            if (taoPrimarySkillIsActive) return;
 
-            bunnyPrimarySkillIsActive = true;
-            BunnyPrimarySkillFuncAsync();
+            taoPrimarySkillIsActive = true;
+            TaoPrimarySkillFuncAsync();
         }
 
-        public void StopBunnyPrimarySkill()
+        public void StopTaoPrimarySkill()
         {
-            bunnyPrimarySkillIsActive = false;
+            taoPrimarySkillIsActive = false;
         }
 
         #endregion
 
-        #region TurtlePrimarySkill
+        #region QianPrimarySkill
 
-        public async Task TurtlePrimarySkillFuncAsync()
+        public async Task QianPrimarySkillFuncAsync()
         {
-            while (turtlePrimarySkillIsActive)
+            while (qianPrimarySkillIsActive)
             {
                 Feel("Turtle Primary", 0);
                 await Task.Delay(1000);
             }
         }
-        public void StartTurtlePrimarySkill()
+        public void StartQianPrimarySkill()
         {
-            if (turtlePrimarySkillIsActive) return;
+            if (qianPrimarySkillIsActive) return;
 
-            turtlePrimarySkillIsActive = true;
-            TurtlePrimarySkillFuncAsync();
+            qianPrimarySkillIsActive = true;
+            QianPrimarySkillFuncAsync();
         }
 
         public void StopTurtlePrimarySkill()
         {
-            turtlePrimarySkillIsActive = false;
+            qianPrimarySkillIsActive = false;
         }
 
         #endregion
 
-        #region FoxPrimarySkill
+        #region LiPrimarySkill
 
-        public async Task FoxPrimarySkillFuncAsync()
+        public async Task LiPrimarySkillFuncAsync()
         {
-            while (foxPrimarySkillIsActive)
+            while (liPrimarySkillIsActive)
             {
-                Feel("Fox Primary", 0);
+                Feel("Li 1st", 0);
                 await Task.Delay(500);
             }
         }
         public void StartFoxPrimarySkill()
         {
-            if (foxPrimarySkillIsActive) return;
+            if (liPrimarySkillIsActive) return;
 
-            foxPrimarySkillIsActive = true;
-            FoxPrimarySkillFuncAsync();
+            liPrimarySkillIsActive = true;
+            LiPrimarySkillFuncAsync();
         }
 
         public void StopFoxPrimarySkill()
         {
-            foxPrimarySkillIsActive = false;
+            liPrimarySkillIsActive = false;
         }
 
         #endregion
@@ -400,7 +400,7 @@ namespace OWO_GunfireReborn
         public void StopAllHapticFeedback()
         {
             StopHeartBeat();
-            StopBunnyPrimarySkill();
+            StopTaoPrimarySkill();
             StopTurtlePrimarySkill();
             StopFoxPrimarySkill();
             StopChargingWeapon(true);

@@ -326,22 +326,23 @@ namespace OWO_GunfireReborn
                     break;
                 //cat - 
                 case 205:
-                    Plugin.owoSkin.Feel("Primary Cat");
+                    Plugin.owoSkin.Feel("Crown 1st");
                     break;
 
                 // monkey - Xing Zhe
                 case 214:
-                    Plugin.owoSkin.Feel("Primary Monkey");
+                    Plugin.owoSkin.Feel("Xing 1st");
                     break;
 
                 //falcon - Qing Yan
                 case 206:
+                    Plugin.owoSkin.Feel("Qing 1st");
                     break;
 
                 //tiger - Lei Luo
                 case 207:
                     //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
-                    Plugin.owoSkin.Feel("Primary Tiger");
+                    Plugin.owoSkin.Feel("Lei 1st");
                     break;
 
                 //turtle - Qian Sui
@@ -350,8 +351,8 @@ namespace OWO_GunfireReborn
                     {
                         continuousPrimaryStart = true;
                         //start effect
-                        Plugin.owoSkin.Feel("Primary Turtle");
-                        Plugin.owoSkin.StartTurtlePrimarySkill();
+                        Plugin.owoSkin.Feel("Qian 1st");
+                        Plugin.owoSkin.StartQianPrimarySkill();
                     }
                     break;
 
@@ -381,7 +382,7 @@ namespace OWO_GunfireReborn
                     {
                         continuousPrimaryStart = true;
                         //start effect
-                        Plugin.owoSkin.StartBunnyPrimarySkill();
+                        Plugin.owoSkin.StartTaoPrimarySkill();
                     }
                     break;
 
@@ -453,7 +454,7 @@ namespace OWO_GunfireReborn
                 {
                     OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                     //stop effect
-                    Plugin.owoSkin.StopBunnyPrimarySkill();
+                    Plugin.owoSkin.StopTaoPrimarySkill();
                 }
             }
             if (HeroAttackCtrl.HeroObj.playerProp.SID == 201)
