@@ -585,7 +585,6 @@ namespace OWO_GunfireReborn
         public static void Postfix()
         {
             if (Plugin.owoSkin.suitDisabled) return;
-            Plugin.owoSkin.LOG("ASFASDFASDFSDFASDFASDF");
             //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
             Plugin.owoSkin.Feel("Jump",2, 0.5f);
         }
@@ -709,6 +708,20 @@ namespace OWO_GunfireReborn
                 Plugin.owoSkin.Feel("Death");
                 Plugin.owoSkin.StartHeartBeat();
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(HeroBeHitCtrl), "HeroHasHurt")]
+    public class HeroHasHurt
+    {
+        [HarmonyPostfix]
+        public static void Postfix()
+        {
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.LOG("HeroHasHurt");
+
+            Plugin.owoSkin.Feel("Impact");
         }
     }
 
