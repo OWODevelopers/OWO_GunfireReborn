@@ -1,13 +1,13 @@
-0~Heal~100,1,90,0,0,0,|0%100~weapon-0~#
-1~Jump~100,1,90,0,0,0,|0%100~weapon-0~Movement#
-2~Jump Land~100,1,90,0,0,0,|0%100~weapon-0~Movement#
-3~Dash~100,1,90,0,0,0,|0%100~weapon-0~Movement#
-4~Impact~100,1,90,0,0,0,|0%100~weapon-0~Damage#
-5~Heart Beat~100,1,90,0,0,0,|0%100~health-0~Damage#
-6~Shield Break~100,1,90,0,0,0,|0%100~weapon-0~Damage#
-7~Death~100,1,90,0,0,0,|0%100~weapon-0~Damage#
-8~Recoil L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-9~Recoil R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+0~Heal~100,2,65,200,0,0,Hit|3%100,2%100,9%100,8%100&70,1,65,0,0,0,Hit|3%41,2%43,9%44,8%48,6%100,7%100,1%100,0%100&70,2,65,0,200,0,Hit|1%100,0%100,6%100,7%100~health-0~#
+1~Jump~60,1,60,0,100,0,Fall|9%100,8%100,3%100,2%100~environment-5~Movement#
+2~Dash~70,3,70,0,300,0,Slip|0%100,1%100,3%100,2%100,7%100,6%100,9%100,8%100~environment-1~Movement#
+3~Jump Land~40,2,100,0,0,0,Land|9%100,8%100,2%100,3%100~environment-3~Movement#
+4~Impact~100,1,90,0,0,0,Hit~impact-3~Damage#
+5~Heartbeat~100,2,70,0,100,0,Hit|1%100&100,3,70,0,200,0,Hit|1%100~health-0~Damage#
+6~Shield Break~100,1,90,0,0,0,|0%100~impact-10~Damage#
+7~Death~40,11,80,0,900,0,Hit|0%100,1%100,3%100,2%100,7%100,9%100,8%100,6%100~health-3~Damage#
+8~Recoil L~11,1,70,0,0,0,Hit|5%100~weapon-2~Weapons#
+9~Recoil R~11,1,70,0,0,0,Hit|4%100~weapon-2~Weapons#
 10~Charge L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
 11~Charge R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
 12~Charge LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
