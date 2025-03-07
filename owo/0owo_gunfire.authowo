@@ -8,15 +8,15 @@
 7~Death~40,11,80,0,900,0,Hit|0%100,1%100,3%100,2%100,7%100,9%100,8%100,6%100~health-3~Damage#
 8~Recoil L~11,1,70,0,0,0,Hit|5%100~weapon-2~Weapons#
 9~Recoil R~11,1,70,0,0,0,Hit|4%100~weapon-2~Weapons#
-10~Charge L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-11~Charge R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-12~Charge LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+10~Charge L~50,3,50,100,100,0,Hit|5%100~weapon-0~Weapons#
+11~Charge R~50,3,50,100,100,0,Hit|4%100~weapon-0~Weapons#
+12~Charge LR~50,3,50,100,100,0,Hit|5%100,4%100~weapon-0~Weapons#
 13~Cloud Weaver L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
 14~Cloud Weaver R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
 15~Cloud Weaver LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-16~Continuous L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-17~Continuous R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-18~Continuous LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
+16~Continuous L~40,2,70,0,0,0,Hit|5%100~weapon-0~Weapons#
+17~Continuous R~40,2,70,0,0,0,Hit|4%100~weapon-0~Weapons#
+18~Continuous LR~40,2,70,0,0,0,Hit|5%100,4%100~weapon-0~Weapons#
 19~Crown 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
 20~Ao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
 21~Qing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
