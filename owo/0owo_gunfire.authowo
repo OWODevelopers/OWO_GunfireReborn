@@ -1,43 +1,42 @@
-0~Heal~100,2,65,200,0,0,Hit|3%100,2%100,9%100,8%100&70,1,65,0,0,0,Hit|3%41,2%43,9%44,8%48,6%100,7%100,1%100,0%100&70,2,65,0,200,0,Hit|1%100,0%100,6%100,7%100~health-0~#
-1~Jump~60,1,60,0,100,0,Fall|9%100,8%100,3%100,2%100~environment-5~Movement#
-2~Dash~70,3,70,0,300,0,Slip|0%100,1%100,3%100,2%100,7%100,6%100,9%100,8%100~environment-1~Movement#
-3~Jump Land~40,2,100,0,0,0,Land|9%100,8%100,2%100,3%100~environment-3~Movement#
-4~Impact~100,1,90,0,0,0,Hit~impact-3~Damage#
-5~Heartbeat~100,2,70,0,100,0,Hit|1%100&100,3,70,0,200,0,Hit|1%100~health-0~Damage#
-6~Shield Break~100,1,90,0,0,0,|0%100~impact-10~Damage#
-7~Death~40,11,80,0,900,0,Hit|0%100,1%100,3%100,2%100,7%100,9%100,8%100,6%100~health-3~Damage#
-8~Recoil L~11,1,70,0,0,0,Hit|5%100~weapon-2~Weapons#
-9~Recoil R~11,1,70,0,0,0,Hit|4%100~weapon-2~Weapons#
-10~Charge L~50,3,50,100,100,0,Hit|5%100~weapon-0~Weapons#
-11~Charge R~50,3,50,100,100,0,Hit|4%100~weapon-0~Weapons#
-12~Charge LR~50,3,50,100,100,0,Hit|5%100,4%100~weapon-0~Weapons#
-13~Cloud Weaver L~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-14~Cloud Weaver R~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-15~Cloud Weaver LR~100,1,90,0,0,0,|0%100~weapon-0~Weapons#
-16~Continuous L~40,2,70,0,0,0,Hit|5%100~weapon-0~Weapons#
-17~Continuous R~40,2,70,0,0,0,Hit|4%100~weapon-0~Weapons#
-18~Continuous LR~40,2,70,0,0,0,Hit|5%100,4%100~weapon-0~Weapons#
-19~Crown 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-20~Ao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-21~Qing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-22~Lei 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-23~Tao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-24~Qian 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-25~Xing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-26~Li 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-27~Zi 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-28~Nona 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-29~Lyn 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-30~Momo 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
-31~Crown 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-32~Ao 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-33~Qing 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-34~Lei 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-35~Tao 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-36~Qian 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-37~Xing 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-38~Li 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-39~Zi 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-40~Nona 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-41~Lyn 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
-42~Momo 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack
+0~Jump~60,1,60,0,100,0,Fall|9%100,8%100,3%100,2%100~environment-5~Movement#
+1~Dash~70,3,70,0,300,0,Slip|0%100,1%100,3%100,2%100,7%100,6%100,9%100,8%100~environment-1~Movement#
+2~Jump Land~40,2,100,0,0,0,Land|9%100,8%100,2%100,3%100~environment-3~Movement#
+3~Impact~100,1,90,0,0,0,Hit~impact-3~Health#
+4~Heartbeat~100,2,70,0,100,0,Hit|1%100&100,3,70,0,200,0,Hit|1%100~health-0~Health#
+5~Shield Break~100,1,90,0,0,0,|0%100~impact-10~Health#
+6~Death~40,11,80,0,900,0,Hit|0%100,1%100,3%100,2%100,7%100,9%100,8%100,6%100~health-3~Health#
+7~Recoil L~11,1,70,0,0,0,Hit|5%100~weapon-2~Weapons#
+8~Recoil R~11,1,70,0,0,0,Hit|4%100~weapon-2~Weapons#
+9~Charge L~50,4,60,100,0,0,Hit|5%100~weapon-0~Weapons#
+10~Charge R~50,4,60,100,0,0,Hit|4%100~weapon-0~Weapons#
+11~Charge LR~50,4,60,100,0,0,Hit|5%100,4%100~weapon-0~Weapons#
+12~Continuous L~60,4,50,0,0,0,Hit|5%100~weapon-0~Weapons#
+13~Continuous R~60,4,50,0,0,0,Hit|4%100~weapon-0~Weapons#
+14~Continuous LR~60,4,50,0,0,0,Hit|5%100,4%100~weapon-0~Weapons#
+15~Crown 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+16~Ao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+17~Qing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+18~Lei 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+19~Tao 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+20~Qian 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+21~Xing 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+22~Li 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+23~Zi 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+24~Nona 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+25~Lyn 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+26~Momo 1st~100,1,90,0,0,0,|0%100~weapon-0~Primary Attack#
+27~Crown 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+28~Ao 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+29~Qing 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+30~Lei 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+31~Tao 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+32~Qian 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+33~Xing 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+34~Li 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+35~Zi 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+36~Nona 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+37~Lyn 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+38~Momo 2nd~100,1,90,0,0,0,|0%100~weapon-0~Secondary Attack#
+39~Charged Release R~50,3,80,0,200,0,Hit|4%100~weapon-0~Weapons#
+40~Charged Release L~50,3,80,0,200,0,Hit|5%100~weapon-0~Weapons#
+41~Heal~100,2,65,200,0,0,Hit|3%100,2%100,9%100,8%100&70,1,65,0,0,0,Hit|3%41,2%43,9%44,8%48,6%100,7%100,1%100,0%100&70,2,65,0,200,0,Hit|1%100,0%100,6%100,7%100~health-0~Health
