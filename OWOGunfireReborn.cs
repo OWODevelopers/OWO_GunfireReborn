@@ -270,29 +270,21 @@ namespace OWO_GunfireReborn
     /**
      * On switching weapons
      */
-    [HarmonyPatch(typeof(HeroAttackCtrl), "OnSwitchWeapon")]
-    public class OWO_OnSwitchWeapon
-    {
-        [HarmonyBefore]
-        public static void Prefix()
-        {
-            Plugin.owoSkin.LOG("<CAMBIO DE ARMA> Prefix");
-        }
+    //[HarmonyPatch(typeof(HeroAttackCtrl), "OnSwitchWeapon")]
+    //public class OWO_OnSwitchWeapon
+    //{
+    //    [HarmonyBefore]
+    //    public static void Prefix()
+    //    {
+    //        if (Plugin.owoSkin.suitDisabled)
+    //        {
+    //            return;
+    //        }
 
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            Plugin.owoSkin.LOG("<CAMBIO DE ARMA> Postfix");
-
-            if (Plugin.owoSkin.suitDisabled)
-            {
-                return;
-            }
-
-            Plugin.owoSkin.StopAllHapticFeedback();
-            Plugin.owoSkin.Feel("Weapon Swap");
-        }
-    }
+    //        Plugin.owoSkin.StopAllHapticFeedback();
+    //        Plugin.owoSkin.Feel("Weapon Swap");
+    //    }
+    //}
     #endregion
 
     #region Primary skills (furies)
@@ -699,20 +691,6 @@ namespace OWO_GunfireReborn
             {
                 Plugin.owoSkin.Feel("Impact");
             }
-        }
-    }
-
-    [HarmonyPatch(typeof(HeroBeHitCtrl), "HeroHasHurt")]
-    public class HeroHasHurt
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            Plugin.owoSkin.LOG("HeroHasHurt");
-
-            Plugin.owoSkin.Feel("Impact");
         }
     }
 
