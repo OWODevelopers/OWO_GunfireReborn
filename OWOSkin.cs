@@ -286,7 +286,7 @@ namespace OWO_GunfireReborn
                 Feel(toFeel, 2);
                 await Task.Delay(400);
             }
-            CloudWeaverIsActive = false;
+            ContinueWeaponIsActive = false;
         }
         public void StartContinueWeapon(bool isRight)
         {

@@ -54,22 +54,22 @@ namespace OWO_GunfireReborn
      * Many different classes for guns, not a single parent one.
     */
 
-    [HarmonyPatch(typeof(ASBaseShoot), "OnReload")]
-    public class OWO_OnReload
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASBaseShoot __instance)
-        {
-            if (Plugin.owoSkin.suitDisabled || __instance == null)
-            {
-                return;
-            }
-            if (__instance.ReloadComponent.m_IsReload)
-            {
-                Plugin.owoSkin.Feel("Reload " + Plugin.getHandSide(__instance.ItemID));
-            }
-        }
-    }
+    //[HarmonyPatch(typeof(ASBaseShoot), "OnReload")]
+    //public class OWO_OnReload
+    //{
+    //    [HarmonyPostfix]
+    //    public static void Postfix(ASBaseShoot __instance)
+    //    {
+    //        if (Plugin.owoSkin.suitDisabled || __instance == null)
+    //        {
+    //            return;
+    //        }
+    //        if (__instance.ReloadComponent.m_IsReload)
+    //        {
+    //            Plugin.owoSkin.Feel("Reload " + Plugin.getHandSide(__instance.ItemID));
+    //        }
+    //    }
+    //}
 
     /**
      * pistols and derivatives
