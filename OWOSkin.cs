@@ -214,8 +214,6 @@ namespace OWO_GunfireReborn
             {
                 CloudWeaverLIsActive = false;
             }
-
-            OWO.Stop();
         }
 
         #endregion
@@ -239,7 +237,7 @@ namespace OWO_GunfireReborn
                 Feel(toFeel, 2);
                 await Task.Delay(1000);
             }
-            CloudWeaverIsActive = false;
+            ChargingWeaponIsActive = false;
         }
         public void StartChargingWeapon(bool isRight)
         {
@@ -265,8 +263,6 @@ namespace OWO_GunfireReborn
             {
                 ChargingWeaponLIsActive = false;
             }
-
-            OWO.Stop();
         }
 
         #endregion
@@ -316,8 +312,6 @@ namespace OWO_GunfireReborn
             {
                 ContinueWeaponLIsActive = false;
             }
-
-            OWO.Stop();
         }
 
         #endregion
