@@ -277,7 +277,7 @@ namespace OWO_GunfireReborn
                 if (ContinueWeaponRIsActive)
                     toFeel = "Continuous R";
 
-                if (CloudWeaverLIsActive)
+                if (ContinueWeaponLIsActive)
                     toFeel = "Continuous L";
 
                 if (ContinueWeaponLIsActive && ContinueWeaponRIsActive)

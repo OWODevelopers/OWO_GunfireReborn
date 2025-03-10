@@ -789,20 +789,20 @@ namespace OWO_GunfireReborn
     #endregion
 
 
-    [HarmonyPatch(typeof(AttackSkillBase), "SetFire")]
-    public class SetFire
-    {
-        private static int lastEquipedWeaponId;
+    //[HarmonyPatch(typeof(AttackSkillBase), "SetFire")]
+    //public class SetFire
+    //{
+    //    private static int lastEquipedWeaponId;
 
-        [HarmonyPostfix]
-        public static void Postfix(AttackSkillBase __instance)
-        {
-            if (__instance.ItemID != lastEquipedWeaponId)
-            {
-                Plugin.owoSkin.LOG($"SetFire - WeaponID: {__instance.ItemID}");
-                lastEquipedWeaponId = __instance.ItemID;
-            }
-        }
-    }
+    //    [HarmonyPostfix]
+    //    public static void Postfix(AttackSkillBase __instance)
+    //    {
+    //        if (__instance.ItemID != lastEquipedWeaponId)
+    //        {
+    //            Plugin.owoSkin.LOG($"SetFire - WeaponID: {__instance.ItemSID}");
+    //            lastEquipedWeaponId = __instance.ItemSID;
+    //        }
+    //    }
+    //}
 }
 
