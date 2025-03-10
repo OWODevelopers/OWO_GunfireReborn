@@ -12,15 +12,15 @@ namespace OWO_GunfireReborn
     public class Plugin : BasePlugin
     {
         internal static new ManualLogSource Log;
-        public static OWOSkin owoSkin; 
-        public static bool chargeWeaponCanShoot = false; 
+        public static OWOSkin owoSkin;
+        public static bool chargeWeaponCanShoot = false;
         public static bool continueWeaponCanShoot = false;
         private bool gameStarted = false;
 
         public override void Load()
         {
             Log = base.Log;
-            owoSkin = new OWOSkin();            
+            owoSkin = new OWOSkin();
 
             // delay patching
             SceneManager.sceneLoaded += (UnityAction<Scene, LoadSceneMode>)new Action<Scene, LoadSceneMode>(OnSceneLoaded);
@@ -214,7 +214,7 @@ namespace OWO_GunfireReborn
             }
         }
     }
-    
+
     // this method will activate feedback only when cloud weaver
     // transitions from 1 sword held in hand (inactive state/entering new
     // zones or switching to cloud weaver) to active state in which the 5
@@ -244,7 +244,7 @@ namespace OWO_GunfireReborn
         public static void Postfix(ASFlyswordShoot __instance)
         {
             if (Plugin.owoSkin.suitDisabled || __instance == null) return;
-            
+
             Plugin.owoSkin.StopCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
         }
     }
@@ -266,7 +266,7 @@ namespace OWO_GunfireReborn
             Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
         }
     }
-    
+
     /**
      * On switching weapons
      */
@@ -274,7 +274,8 @@ namespace OWO_GunfireReborn
     public class OWO_OnSwitchWeapon
     {
         [HarmonyBefore]
-        public static void Prefix() {
+        public static void Prefix()
+        {
             Plugin.owoSkin.LOG("<CAMBIO DE ARMA> Prefix");
         }
 
@@ -287,7 +288,7 @@ namespace OWO_GunfireReborn
             {
                 return;
             }
-            
+
             Plugin.owoSkin.StopAllHapticFeedback();
             Plugin.owoSkin.Feel("Weapon Swap");
         }
@@ -524,7 +525,7 @@ namespace OWO_GunfireReborn
                     break;
 
                 //rabbit - Tao
-                case 212:                    
+                case 212:
                     Plugin.owoSkin.Feel("Tao 2nd");
                     break;
 
@@ -533,7 +534,7 @@ namespace OWO_GunfireReborn
             }
         }
     }
-    
+
     /**
      * Secondary skill
      */
@@ -586,7 +587,7 @@ namespace OWO_GunfireReborn
         {
             if (Plugin.owoSkin.suitDisabled) return;
             //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
-            Plugin.owoSkin.Feel("Jump",2, 0.5f);
+            Plugin.owoSkin.Feel("Jump", 2, 0.5f);
         }
     }
 
@@ -605,7 +606,7 @@ namespace OWO_GunfireReborn
             Plugin.owoSkin.Feel("Jump Land", 1, 0.3f);
         }
     }
-    
+
     /**
      * On Dashing
      */
@@ -642,7 +643,7 @@ namespace OWO_GunfireReborn
             Plugin.owoSkin.Feel("Shield Break");
         }
     }
-    
+
     /**
      * When low health starts
      */
@@ -660,7 +661,7 @@ namespace OWO_GunfireReborn
             }
         }
     }
-    
+
     /**
      * When low hp stops
      */
@@ -694,19 +695,9 @@ namespace OWO_GunfireReborn
 
             Plugin.owoSkin.LOG($"HeroInjured: {attid}");
 
-            Plugin.owoSkin.Feel("Impact");
-            //armor break for heros with armor and no shield
-            PlayerProp playerProp = NewObjectCache.GetPlayerProp(HeroBeHitCtrl.HeroID);
-            //if (playerProp.ArmorMax > 0 &&  playerProp.Armor <= 0)
-            //{
-            //    Plugin.owoSkin.Feel("Shield Break");
-            //}
-            //death
-            if (playerProp.HP <= 0)
+            if(attid != 0)
             {
-                Plugin.owoSkin.StopAllHapticFeedback();
-                Plugin.owoSkin.Feel("Death");
-                Plugin.owoSkin.StartHeartBeat();
+                Plugin.owoSkin.Feel("Impact");
             }
         }
     }
@@ -782,6 +773,19 @@ namespace OWO_GunfireReborn
             if (Plugin.owoSkin.suitDisabled) return;
 
             Plugin.owoSkin.Feel("Heal");
+        }
+    }
+
+    [HarmonyPatch(typeof(BoltBehavior.CAction4), "Action")]
+    public class OnPlayerDeath
+    {
+        [HarmonyPostfix]
+        public static void Postfix()
+        {
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            Plugin.owoSkin.StopAllHapticFeedback();
+            Plugin.owoSkin.Feel("Death");
         }
     }
 
