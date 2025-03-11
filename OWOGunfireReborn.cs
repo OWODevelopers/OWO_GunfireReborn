@@ -48,7 +48,7 @@ namespace OWO_GunfireReborn
         }
     }
 
-    #region guns
+    #region Attacks
 
     /**
      * Many different classes for guns, not a single parent one.
@@ -87,7 +87,7 @@ namespace OWO_GunfireReborn
     }
 
     /**
-     * Single shot weapons (snipers, some bows) arms and vest 
+     * Single shot weapons (snipers, some bows) 
      */
     [HarmonyPatch(typeof(ASSingleShoot), "AttackOnce")]
     public class OWO_OnFireSingleShoot
@@ -102,707 +102,735 @@ namespace OWO_GunfireReborn
     }
 
     /**
-     * testing for charged attack once (charging vest, charging arm r) 
+     * On secondary attack
      */
-    [HarmonyPatch(typeof(ASSingleChargeShoot), "ClearChargeAttack")]
-    public class OWO_OnFireSingleChargeShoot
+    [HarmonyPatch(typeof(HeroAttackCtrl), "OnSecRepeatingFire")]
+    public class OnSecRepeatingFire
     {
-        [HarmonyPostfix]
-        public static void Postfix(ASSingleChargeShoot __instance)
+        [HarmonyBefore]
+        public static void Postfix(int weaponid)
         {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+            Plugin.owoSkin.LOG($"OnSecRepeatingFire - ID:{weaponid}");
 
-            Plugin.owoSkin.Feel("Charge " + Plugin.getHandSide(__instance.ItemID));
-        }
+            if (Plugin.owoSkin.suitDisabled) return;
+
+            switch (weaponid)
+            {
+                case 968: //Dinamite
+                    Plugin.owoSkin.Feel("Recoil R");
+                    break;
+                case 1314: //Arp
+                    Plugin.owoSkin.Feel("Recoil LR");
+                    break;
+                default:
+                    Plugin.owoSkin.Feel("Recoil R");
+                    break;
+            }
+        } 
     }
 
-    /**
-     * Charging weapons effect when charging
-     */
-    [HarmonyPatch(typeof(ASAutoChargeShoot), "ShootCanAttack")]
-    public class OWO_OnFireAutoChargeShoot
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASAutoChargeShoot __instance, bool __result)
+        /**
+         * testing for charged attack once 
+         */
+        [HarmonyPatch(typeof(ASSingleChargeShoot), "ClearChargeAttack")]
+        public class OWO_OnFireSingleChargeShoot
         {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
-
-            if (__result)
+            [HarmonyPostfix]
+            public static void Postfix(ASSingleChargeShoot __instance)
             {
-                Plugin.chargeWeaponCanShoot = true;
-                Plugin.owoSkin.StartChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+                Plugin.owoSkin.Feel("Charge " + Plugin.getHandSide(__instance.ItemID));
             }
         }
-    }
 
-    /**
-     * Charging weapons post charging release
-     */
-    [HarmonyPatch(typeof(ASAutoChargeShoot), "OnUp")]
-    public class OWO_OnChargingRelease
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASAutoChargeShoot __instance)
+        /**
+         * Charging weapons effect when charging
+         */
+        [HarmonyPatch(typeof(ASAutoChargeShoot), "ShootCanAttack")]
+        public class OWO_OnFireAutoChargeShoot
         {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
-
-            if (Plugin.chargeWeaponCanShoot)
+            [HarmonyPostfix]
+            public static void Postfix(ASAutoChargeShoot __instance, bool __result)
             {
-                Plugin.chargeWeaponCanShoot = false;
-                //stop thread
-                Plugin.owoSkin.StopChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
 
-                Plugin.owoSkin.Feel("Charged Release " + Plugin.getHandSide(__instance.ItemID));
+                if (__result)
+                {
+                    Plugin.chargeWeaponCanShoot = true;
+                    Plugin.owoSkin.StartChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
+                }
             }
         }
-    }
 
-    /**
-     * Continue shoot weapons when activating
-     */
-    [HarmonyPatch(typeof(ASContinueShoot), "StartBulletSkill")]
-    public class OWO_OnContinueShoot
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASContinueShoot __instance)
+        /**
+         * Charging weapons post charging release
+         */
+        [HarmonyPatch(typeof(ASAutoChargeShoot), "OnUp")]
+        public class OWO_OnChargingRelease
         {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
-
-            Plugin.continueWeaponCanShoot = true;
-            //start thread
-            Plugin.owoSkin.StartContinueWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
-        }
-    }
-
-    /**
-     * Continue shoot weapons when stop firing
-     */
-    [HarmonyPatch(typeof(ASContinueShoot), "EndContinueAttack")]
-    public class OWO_OnContinueStop
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASContinueShoot __instance)
-        {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
-
-            if (Plugin.continueWeaponCanShoot)
+            [HarmonyPostfix]
+            public static void Postfix(ASAutoChargeShoot __instance)
             {
-                Plugin.continueWeaponCanShoot = false;
-                //stop thread
-                Plugin.owoSkin.StopContinueWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+                if (Plugin.chargeWeaponCanShoot)
+                {
+                    Plugin.chargeWeaponCanShoot = false;
+                    //stop thread
+                    Plugin.owoSkin.StopChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
+
+                    Plugin.owoSkin.Feel("Charged Release " + Plugin.getHandSide(__instance.ItemID));
+                }
             }
         }
-    }
 
-    /**
-     * DownUpShoot (Wild hunt) arms and vest 
-     * using ASBaseShoot.StartBulletSkill to cover only the wildhunt itemSID == 1306
-     */
-    [HarmonyPatch(typeof(ASBaseShoot), "StartBulletSkill")]
-    public class OWO_OnFireDownUpShoot
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASBaseShoot __instance)
+        /**
+         * Continue shoot weapons when activating
+         */
+        [HarmonyPatch(typeof(ASContinueShoot), "StartBulletSkill")]
+        public class OWO_OnContinueShoot
         {
-            if (Plugin.owoSkin.suitDisabled || __instance == null)
+            [HarmonyPostfix]
+            public static void Postfix(ASContinueShoot __instance)
             {
-                return;
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+                Plugin.continueWeaponCanShoot = true;
+                //start thread
+                Plugin.owoSkin.StartContinueWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
             }
-            if (__instance.ItemSID == 1306)
+        }
+
+        /**
+         * Continue shoot weapons when stop firing
+         */
+        [HarmonyPatch(typeof(ASContinueShoot), "EndContinueAttack")]
+        public class OWO_OnContinueStop
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ASContinueShoot __instance)
             {
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+                if (Plugin.continueWeaponCanShoot)
+                {
+                    Plugin.continueWeaponCanShoot = false;
+                    //stop thread
+                    Plugin.owoSkin.StopContinueWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
+                }
+            }
+        }
+
+        /**
+         * DownUpShoot (Wild hunt) arms and vest 
+         * using ASBaseShoot.StartBulletSkill to cover only the wildhunt itemSID == 1306
+         */
+        [HarmonyPatch(typeof(ASBaseShoot), "StartBulletSkill")]
+        public class OWO_OnFireDownUpShoot
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ASBaseShoot __instance)
+            {
+                if (Plugin.owoSkin.suitDisabled || __instance == null)
+                {
+                    return;
+                }
+                if (__instance.ItemSID == 1306)
+                {
+                    Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
+                }
+            }
+        }
+
+        // this method will activate feedback only when cloud weaver
+        // transitions from 1 sword held in hand (inactive state/entering new
+        // zones or switching to cloud weaver) to active state in which the 5
+        // cloud weaver swords begin spinng around the wrist,
+        // this can only be activated by initiating sword spinning, it will
+        // not activate again until cloud weaver is inactive (new zone or switching) 
+        [HarmonyPatch(typeof(ASFlyswordShoot), "StartBulletSkill")]
+        public class OWO_OnFireFlySwordStart
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ASFlyswordShoot __instance)
+            {
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+                Plugin.owoSkin.StartCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
+            }
+        }
+
+        /**
+         * LANCE : Might not be enough and not covering
+         * when downed, when ui on (scrolls, pause menu, etc)
+         */
+        [HarmonyPatch(typeof(ASFlyswordShoot), "Destroy")]
+        public class OWO_OnFireFlySwordStopHaptics
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ASFlyswordShoot __instance)
+            {
+                if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+
+                Plugin.owoSkin.StopCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
+            }
+        }
+
+        // this method will activate feedback only while cloud weaver is
+        // actively hitting enemies, does not activate from any button presses,
+        // may be ideal to change from flyswordvest and flyswordarmwristspinning
+        // to recoil variants
+        [HarmonyPatch(typeof(ASFlyswordShoot), "FlyswordOnDown")]
+        public class OWO_OnFireFlySwordOnDown
+        {
+            [HarmonyPostfix]
+            public static void Postfix(ASFlyswordShoot __instance)
+            {
+                if (Plugin.owoSkin.suitDisabled || __instance == null)
+                {
+                    return;
+                }
                 Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
             }
         }
-    }
 
-    // this method will activate feedback only when cloud weaver
-    // transitions from 1 sword held in hand (inactive state/entering new
-    // zones or switching to cloud weaver) to active state in which the 5
-    // cloud weaver swords begin spinng around the wrist,
-    // this can only be activated by initiating sword spinning, it will
-    // not activate again until cloud weaver is inactive (new zone or switching) 
-    [HarmonyPatch(typeof(ASFlyswordShoot), "StartBulletSkill")]
-    public class OWO_OnFireFlySwordStart
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASFlyswordShoot __instance)
+        /**
+         * On switching weapons
+         */
+        //[HarmonyPatch(typeof(HeroAttackCtrl), "OnSwitchWeapon")]
+        //public class OWO_OnSwitchWeapon
+        //{
+        //    [HarmonyBefore]
+        //    public static void Prefix()
+        //    {
+        //        if (Plugin.owoSkin.suitDisabled)
+        //        {
+        //            return;
+        //        }
+
+        //        Plugin.owoSkin.StopAllHapticFeedback();
+        //        Plugin.owoSkin.Feel("Weapon Swap");
+        //    }
+        //}
+        #endregion
+
+        #region Primary skills (furies)
+
+        /**
+         * triggering skill on Down
+         */
+        [HarmonyPatch(typeof(HeroAttackCtrl), "StartActiveSkills")]
+        public class OWO_OnPrimarySkillOnDown
         {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
+            public static bool continuousPrimaryStart = false;
+            public static int kasuniState = 0;
 
-            Plugin.owoSkin.StartCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
-        }
-    }
-
-    /**
-     * LANCE : Might not be enough and not covering
-     * when downed, when ui on (scrolls, pause menu, etc)
-     */
-    [HarmonyPatch(typeof(ASFlyswordShoot), "Destroy")]
-    public class OWO_OnFireFlySwordStopHaptics
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASFlyswordShoot __instance)
-        {
-            if (Plugin.owoSkin.suitDisabled || __instance == null) return;
-
-            Plugin.owoSkin.StopCloudWeaver(Plugin.getHandSide(__instance.ItemID) == "R");
-        }
-    }
-
-    // this method will activate feedback only while cloud weaver is
-    // actively hitting enemies, does not activate from any button presses,
-    // may be ideal to change from flyswordvest and flyswordarmwristspinning
-    // to recoil variants
-    [HarmonyPatch(typeof(ASFlyswordShoot), "FlyswordOnDown")]
-    public class OWO_OnFireFlySwordOnDown
-    {
-        [HarmonyPostfix]
-        public static void Postfix(ASFlyswordShoot __instance)
-        {
-            if (Plugin.owoSkin.suitDisabled || __instance == null)
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                return;
-            }
-            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
-        }
-    }
-
-    /**
-     * On switching weapons
-     */
-    //[HarmonyPatch(typeof(HeroAttackCtrl), "OnSwitchWeapon")]
-    //public class OWO_OnSwitchWeapon
-    //{
-    //    [HarmonyBefore]
-    //    public static void Prefix()
-    //    {
-    //        if (Plugin.owoSkin.suitDisabled)
-    //        {
-    //            return;
-    //        }
-
-    //        Plugin.owoSkin.StopAllHapticFeedback();
-    //        Plugin.owoSkin.Feel("Weapon Swap");
-    //    }
-    //}
-    #endregion
-
-    #region Primary skills (furies)
-
-    /**
-     * triggering skill on Down
-     */
-    [HarmonyPatch(typeof(HeroAttackCtrl), "StartActiveSkills")]
-    public class OWO_OnPrimarySkillOnDown
-    {
-        public static bool continuousPrimaryStart = false;
-        public static int kasuniState = 0;
-
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if (Plugin.owoSkin.suitDisabled)
-            {
-                return;
-            }
-
-            //heroIds switch cases
-            // Cat    -  Crown Prince
-            // Dog    -  Ao Bai
-            // Falcon -  Qing Yan
-            // Tiger  -  Lei Luo
-            // Bunny  -  Tao
-            // Turtle -  Qian Sui
-            //-------------------- PAID DLCs
-            // Monkey -  Xing Zhe
-            // Fox    -  Li
-            // Owl    -  Zi Xiao
-            // Panda  -  Nona
-            // Goat   -  Lyn
-            // Squirrel - Momo  
-            switch (HeroAttackCtrl.HeroObj.playerProp.SID)
-            {
-                //dog - Ao Bai
-                case 201:
-                    Plugin.owoSkin.Feel("Dog Dual");
-                    break;
-                //cat - 
-                case 205:
-                    Plugin.owoSkin.Feel("Crown 1st");
-                    break;
-
-                // monkey - Xing Zhe
-                case 214:
-                    Plugin.owoSkin.Feel("Xing 1st");
-                    break;
-
-                //falcon - Qing Yan
-                case 206:
-                    Plugin.owoSkin.Feel("Qing 1st");
-                    break;
-
-                //tiger - Lei Luo
-                case 207:
-                    //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
-                    Plugin.owoSkin.Feel("Lei 1st");
-                    break;
-
-                //turtle - Qian Sui
-                case 213:
-                    if (!continuousPrimaryStart)
-                    {
-                        continuousPrimaryStart = true;
-                        //start effect
-                        Plugin.owoSkin.Feel("Qian 1st");
-                        Plugin.owoSkin.StartQianPrimarySkill();
-                    }
-                    break;
-
-                //fox - Li
-                case 215:
-                    //activation + continuous
-                    if (kasuniState == 0)
-                    {
-                        Plugin.owoSkin.StartLiPrimarySkill();
-                        kasuniState = 1;
-                        break;
-                    }
-                    //release
-                    if (kasuniState == 1)
-                    {
-                        //stop effect
-                        Plugin.owoSkin.StopLiPrimarySkill();
-                        Plugin.owoSkin.Feel("Li 1st Release");
-                        kasuniState = 0;
-                        break;
-                    }
-                    break;
-
-                //rabbit
-                case 212:
-                    if (!continuousPrimaryStart)
-                    {
-                        continuousPrimaryStart = true;
-                        //start effect
-                        Plugin.owoSkin.StartTaoPrimarySkill();
-                    }
-                    break;
-
-                default:
+                if (Plugin.owoSkin.suitDisabled)
+                {
                     return;
+                }
+
+                //heroIds switch cases
+                // Cat    -  Crown Prince
+                // Dog    -  Ao Bai
+                // Falcon -  Qing Yan
+                // Tiger  -  Lei Luo
+                // Bunny  -  Tao
+                // Turtle -  Qian Sui
+                //-------------------- PAID DLCs
+                // Monkey -  Xing Zhe
+                // Fox    -  Li
+                // Owl    -  Zi Xiao
+                // Panda  -  Nona
+                // Goat   -  Lyn
+                // Squirrel - Momo  
+                switch (HeroAttackCtrl.HeroObj.playerProp.SID)
+                {
+                    //dog - Ao Bai
+                    case 201:
+                        Plugin.owoSkin.Feel("Dog Dual");
+                        break;
+                    //cat - 
+                    case 205:
+                        Plugin.owoSkin.Feel("Crown 1st");
+                        break;
+
+                    // monkey - Xing Zhe
+                    case 214:
+                        Plugin.owoSkin.Feel("Xing 1st");
+                        break;
+
+                    //falcon - Qing Yan
+                    case 206:
+                        Plugin.owoSkin.Feel("Qing 1st");
+                        break;
+
+                    //tiger - Lei Luo
+                    case 207:
+                        //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
+                        Plugin.owoSkin.Feel("Lei 1st");
+                        break;
+
+                    //turtle - Qian Sui
+                    case 213:
+                        if (!continuousPrimaryStart)
+                        {
+                            continuousPrimaryStart = true;
+                            //start effect
+                            Plugin.owoSkin.Feel("Qian 1st");
+                            Plugin.owoSkin.StartQianPrimarySkill();
+                        }
+                        break;
+
+                    //fox - Li
+                    case 215:
+                        //activation + continuous
+                        if (kasuniState == 0)
+                        {
+                            Plugin.owoSkin.StartLiPrimarySkill();
+                            kasuniState = 1;
+                            break;
+                        }
+                        //release
+                        if (kasuniState == 1)
+                        {
+                            //stop effect
+                            Plugin.owoSkin.StopLiPrimarySkill();
+                            Plugin.owoSkin.Feel("Li 1st Release");
+                            kasuniState = 0;
+                            break;
+                        }
+                        break;
+
+                    //rabbit
+                    case 212:
+                        if (!continuousPrimaryStart)
+                        {
+                            continuousPrimaryStart = true;
+                            //start effect
+                            Plugin.owoSkin.StartTaoPrimarySkill();
+                        }
+                        break;
+
+                    default:
+                        return;
+                }
             }
         }
-    }
 
-    /**
-     * Stop primary skills continuous effects turtle Qian Sui
-     */
-    [HarmonyPatch(typeof(HeroAttackCtrl), "BreakPower")]
-    public class OWO_OnSkillBreak
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * Stop primary skills continuous effects turtle Qian Sui
+         */
+        [HarmonyPatch(typeof(HeroAttackCtrl), "BreakPower")]
+        public class OWO_OnSkillBreak
         {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
-            Plugin.owoSkin.StopTurtlePrimarySkill();
-            OWO_OnPrimarySkillOnDown.kasuniState = 0;
-            Plugin.owoSkin.StopLiPrimarySkill();
-        }
-    }
-
-    /**
-    * Stop primary skills continuous effects turtle
-    */
-    [HarmonyPatch(typeof(SkillBolt.Cartoon1200405), "Active")]
-    public class OWO_OnSkillEnd
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if (Plugin.owoSkin.suitDisabled || HeroAttackCtrl.HeroObj.playerProp.SID != 213)
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                return;
-            }
+                if (Plugin.owoSkin.suitDisabled) return;
 
-            if (OWO_OnPrimarySkillOnDown.continuousPrimaryStart)
-            {
                 OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
-                //stop effect
                 Plugin.owoSkin.StopTurtlePrimarySkill();
-                Plugin.owoSkin.Feel("Qian 1st");
+                OWO_OnPrimarySkillOnDown.kasuniState = 0;
+                Plugin.owoSkin.StopLiPrimarySkill();
             }
         }
-    }
 
-
-    /**
-    * Stop primary skills continuous effects bunny
-    */
-    [HarmonyPatch(typeof(UIScript.HeroSKillLogicBase), "CommonColdDown")]
-    public class OWO_OnSkillEndBunny
-    {
-        [HarmonyPostfix]
-        public static void Postfix(UIScript.HeroSKillLogicBase __instance)
+        /**
+        * Stop primary skills continuous effects turtle
+        */
+        [HarmonyPatch(typeof(SkillBolt.Cartoon1200405), "Active")]
+        public class OWO_OnSkillEnd
         {
-            if (Plugin.owoSkin.suitDisabled)
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                return;
-            }
-            if (HeroAttackCtrl.HeroObj.playerProp.SID == 212)
-            {
+                if (Plugin.owoSkin.suitDisabled || HeroAttackCtrl.HeroObj.playerProp.SID != 213)
+                {
+                    return;
+                }
+
                 if (OWO_OnPrimarySkillOnDown.continuousPrimaryStart)
                 {
                     OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                     //stop effect
-                    Plugin.owoSkin.StopTaoPrimarySkill();
+                    Plugin.owoSkin.StopTurtlePrimarySkill();
+                    Plugin.owoSkin.Feel("Qian 1st");
                 }
             }
-            if (HeroAttackCtrl.HeroObj.playerProp.SID == 201)
-            {
-                Plugin.owoSkin.StopChargingWeapon(false);
-            }
         }
-    }
 
-    /**
-     * Secondary skill on Down
-     */
-    [HarmonyPatch(typeof(HeroAttackCtrl), "ReadyThrowGrenade")]
-    public class OWO_OnSecondarySkillOnDown
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+
+        /**
+        * Stop primary skills continuous effects bunny
+        */
+        [HarmonyPatch(typeof(UIScript.HeroSKillLogicBase), "CommonColdDown")]
+        public class OWO_OnSkillEndBunny
         {
-            if (Plugin.owoSkin.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
+            [HarmonyPostfix]
+            public static void Postfix(UIScript.HeroSKillLogicBase __instance)
             {
-                return;
-            }
-
-            //heroIds switch cases
-            // Cat    -  Crown Prince
-            // Dog    -  Ao Bai
-            // Falcon -  Qing Yan
-            // Tiger  -  Lei Luo
-            // Bunny  -  Tao
-            // Turtle -  Qian Sui
-            //-------------------- PAID DLCs
-            // Monkey -  Xing Zhe
-            // Fox    -  Li
-            // Owl    -  Zi Xiao
-            // Panda  -  Nona
-            // Goat   -  Lyn
-            // Squirrel - Momo 
-            switch (HeroAttackCtrl.HeroObj.playerProp.SID)
-            {
-                //monkey - Xing Zhe
-                case 214:
-                    Plugin.owoSkin.Feel("Xing 2nd");
-                    break;
-
-                //falcon - Qing Yan
-                case 206:
-                    Plugin.owoSkin.Feel("Qing 2nd");
-                    break;
-
-                //tiger - Lei Luo
-                case 207:
-                    Plugin.owoSkin.Feel("Lei 2nd");
-                    break;
-
-                //turtle - Qian
-                case 213:
-                    Plugin.owoSkin.Feel("Qian 2nd");
-                    break;
-
-                //rabbit - Tao
-                case 212:
-                    Plugin.owoSkin.Feel("Tao 2nd");
-                    break;
-
-                default:
+                if (Plugin.owoSkin.suitDisabled)
+                {
                     return;
+                }
+                if (HeroAttackCtrl.HeroObj.playerProp.SID == 212)
+                {
+                    if (OWO_OnPrimarySkillOnDown.continuousPrimaryStart)
+                    {
+                        OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
+                        //stop effect
+                        Plugin.owoSkin.StopTaoPrimarySkill();
+                    }
+                }
+                if (HeroAttackCtrl.HeroObj.playerProp.SID == 201)
+                {
+                    Plugin.owoSkin.StopChargingWeapon(false);
+                }
             }
         }
-    }
 
-    /**
-     * Secondary skill
-     */
-    [HarmonyPatch(typeof(HeroAttackCtrl), "ThrowGrenade")]
-    public class OWO_OnSecondarySkillOnUp
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * Secondary skill on Down
+         */
+        [HarmonyPatch(typeof(HeroAttackCtrl), "ReadyThrowGrenade")]
+        public class OWO_OnSecondarySkillOnDown
         {
-            if (Plugin.owoSkin.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                return;
-            }
-
-            //heroIds switch cases
-            switch (HeroAttackCtrl.HeroObj.playerProp.SID)
-            {
-                //cat
-                case 205:
-                    Plugin.owoSkin.Feel("Crown 2nd");
-                    break;
-
-                //dog 
-                case 201:
-                    Plugin.owoSkin.Feel("Ao 2nd");
-                    break;
-                // - Li
-                case 215:
-                    Plugin.owoSkin.Feel("Li 2nd");
-                    break;
-
-                default:
+                if (Plugin.owoSkin.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
+                {
                     return;
+                }
+
+                //heroIds switch cases
+                // Cat    -  Crown Prince
+                // Dog    -  Ao Bai
+                // Falcon -  Qing Yan
+                // Tiger  -  Lei Luo
+                // Bunny  -  Tao
+                // Turtle -  Qian Sui
+                //-------------------- PAID DLCs
+                // Monkey -  Xing Zhe
+                // Fox    -  Li
+                // Owl    -  Zi Xiao
+                // Panda  -  Nona
+                // Goat   -  Lyn
+                // Squirrel - Momo 
+                switch (HeroAttackCtrl.HeroObj.playerProp.SID)
+                {
+                    //monkey - Xing Zhe
+                    case 214:
+                        Plugin.owoSkin.Feel("Xing 2nd");
+                        break;
+
+                    //falcon - Qing Yan
+                    case 206:
+                        Plugin.owoSkin.Feel("Qing 2nd");
+                        break;
+
+                    //tiger - Lei Luo
+                    case 207:
+                        Plugin.owoSkin.Feel("Lei 2nd");
+                        break;
+
+                    //turtle - Qian
+                    case 213:
+                        Plugin.owoSkin.Feel("Qian 2nd");
+                        break;
+
+                    //rabbit - Tao
+                    case 212:
+                        Plugin.owoSkin.Feel("Tao 2nd");
+                        break;
+
+                    default:
+                        return;
+                }
             }
         }
-    }
 
-    #endregion
-
-    #region Moves
-
-    /**
-    * OnJumping
-    */
-    [HarmonyPatch(typeof(HeroMoveState.HeroMoveMotor), "OnJump")]
-    public class OWO_OnJumping
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * Secondary skill
+         */
+        [HarmonyPatch(typeof(HeroAttackCtrl), "ThrowGrenade")]
+        public class OWO_OnSecondarySkillOnUp
         {
-            if (Plugin.owoSkin.suitDisabled) return;
-            //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
-            Plugin.owoSkin.Feel("Jump", 2, 0.5f);
-        }
-    }
-
-    /**
-     * After jumps when touching floor
-     */
-    [HarmonyPatch(typeof(HeroMoveManager), "OnLand")]
-    public class OWO_OnLanding
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            //Plugin.owoSkin.Feel("Land After Jump", true, 0.3f);
-            Plugin.owoSkin.Feel("Jump Land", 1, 0.3f);
-        }
-    }
-
-    /**
-     * On Dashing
-     */
-    [HarmonyPatch(typeof(SkillBolt.CAction1310), "Action")]
-    public class OWO_OnDashing
-    {
-        [HarmonyPostfix]
-        public static void Postfix(SkillBolt.CSkillBase skill)
-        {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            if (SkillBolt.CServerArg.IsHeroCtrl(skill))
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                Plugin.owoSkin.Feel("Dash");
+                if (Plugin.owoSkin.suitDisabled || !WarPanelManager.instance.m_canThrowGrenade)
+                {
+                    return;
+                }
+
+                //heroIds switch cases
+                switch (HeroAttackCtrl.HeroObj.playerProp.SID)
+                {
+                    //cat
+                    case 205:
+                        Plugin.owoSkin.Feel("Crown 2nd");
+                        break;
+
+                    //dog 
+                    case 201:
+                        Plugin.owoSkin.Feel("Ao 2nd");
+                        break;
+                    // - Li
+                    case 215:
+                        Plugin.owoSkin.Feel("Li 2nd");
+                        break;
+
+                    default:
+                        return;
+                }
             }
         }
-    }
 
-    #endregion
+        #endregion
 
-    #region Health and shield
+        #region Moves
 
-    /**
-     * When Shield breaks
-     */
-    [HarmonyPatch(typeof(BoltBehavior.CAction46), "Action")]
-    public class OWO_OnShieldBreak
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+        * OnJumping
+        */
+        [HarmonyPatch(typeof(HeroMoveState.HeroMoveMotor), "OnJump")]
+        public class OWO_OnJumping
         {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            Plugin.owoSkin.Feel("Shield Break");
-        }
-    }
-
-    /**
-     * When low health starts
-     */
-    [HarmonyPatch(typeof(HeroBeHitCtrl), "PlayLowHpAndShield")]
-    public class OWO_OnLowHealthStart
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            if (HeroBeHitCtrl.NearlyDeadAction != -1)
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                Plugin.owoSkin.StartHeartBeat();
+                if (Plugin.owoSkin.suitDisabled) return;
+                //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
+                Plugin.owoSkin.Feel("Jump", 2, 0.5f);
             }
         }
-    }
 
-    /**
-     * When low hp stops
-     */
-    [HarmonyPatch(typeof(HeroBeHitCtrl), "DelLowHpAndShield")]
-    public class OWO_OnLowHealthStop
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * After jumps when touching floor
+         */
+        [HarmonyPatch(typeof(HeroMoveManager), "OnLand")]
+        public class OWO_OnLanding
         {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            Plugin.owoSkin.StopHeartBeat();
-        }
-    }
-
-    /**
-     * Can't find hit transform object, using static class
-     * as an gydrator or factory of some sort in the original code, ugly
-     * 
-     * Use this function as well for geros with armor instead of shield
-     * 
-     * Death effect
-     */
-    [HarmonyPatch(typeof(HeroBeHitCtrl), "HeroInjured")]
-    public class OWO_OnInjured
-    {
-        [HarmonyPostfix]
-        public static void Postfix(int attid)
-        {
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            Plugin.owoSkin.LOG($"HeroInjured: {attid}");
-
-            if(attid != 0)
+            [HarmonyPostfix]
+            public static void Postfix()
             {
-                Plugin.owoSkin.Feel("Impact");
+                if (Plugin.owoSkin.suitDisabled) return;
+
+                //Plugin.owoSkin.Feel("Land After Jump", true, 0.3f);
+                Plugin.owoSkin.Feel("Jump Land", 1, 0.3f);
             }
         }
-    }
 
-    /**
-     * When player gives up after death
-     */
-    [HarmonyPatch(typeof(UIScript.PCResurgencePanel_Logic), "GiveUp")]
-    public class OWO_OnGiveUp
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * On Dashing
+         */
+        [HarmonyPatch(typeof(SkillBolt.CAction1310), "Action")]
+        public class OWO_OnDashing
         {
-            if (Plugin.owoSkin.suitDisabled) return;
+            [HarmonyPostfix]
+            public static void Postfix(SkillBolt.CSkillBase skill)
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.owoSkin.StopHeartBeat();
+                if (SkillBolt.CServerArg.IsHeroCtrl(skill))
+                {
+                    Plugin.owoSkin.Feel("Dash");
+                }
+            }
         }
-    }
 
-    /**
-     * When player is NOT back to life, stop heartbeat
-     */
-    [HarmonyPatch(typeof(SalvationManager), "AskEnterWatch")]
-    public class OWO_OnNotRevived
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        #endregion
+
+        #region Health and shield
+
+        /**
+         * When Shield breaks
+         */
+        [HarmonyPatch(typeof(BoltBehavior.CAction46), "Action")]
+        public class OWO_OnShieldBreak
         {
-            if (Plugin.owoSkin.suitDisabled) return;
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.owoSkin.StopHeartBeat();
+                Plugin.owoSkin.Feel("Shield Break");
+            }
         }
-    }
 
-    /**
-     * When player is back to life, stop heartbeat
-     */
-    [HarmonyPatch(typeof(NewPlayerManager), "PlayerRelife")]
-    public class OWO_OnBackToLife
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * When low health starts
+         */
+        [HarmonyPatch(typeof(HeroBeHitCtrl), "PlayLowHpAndShield")]
+        public class OWO_OnLowHealthStart
         {
-            if (Plugin.owoSkin.suitDisabled) return;
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.owoSkin.StopHeartBeat();
+                if (HeroBeHitCtrl.NearlyDeadAction != -1)
+                {
+                    Plugin.owoSkin.StartHeartBeat();
+                }
+            }
         }
-    }
 
-    /**
-     * When healing item used
-     */
-    [HarmonyPatch(typeof(BoltBehavior.CAction1069), "Action")]
-    public class OWO_OnHealing
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * When low hp stops
+         */
+        [HarmonyPatch(typeof(HeroBeHitCtrl), "DelLowHpAndShield")]
+        public class OWO_OnLowHealthStop
         {
-            if (Plugin.owoSkin.suitDisabled) return;
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.owoSkin.Feel("Heal");
+                Plugin.owoSkin.StopHeartBeat();
+            }
         }
-    }
 
-    [HarmonyPatch(typeof(BoltBehavior.CAction4), "Action")]
-    public class OnPlayerDeath
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
+        /**
+         * Can't find hit transform object, using static class
+         * as an gydrator or factory of some sort in the original code, ugly
+         * 
+         * Use this function as well for geros with armor instead of shield
+         * 
+         * Death effect
+         */
+        [HarmonyPatch(typeof(HeroBeHitCtrl), "HeroInjured")]
+        public class OWO_OnInjured
         {
-            if (Plugin.owoSkin.suitDisabled) return;
+            [HarmonyPostfix]
+            public static void Postfix(int attid)
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-            Plugin.owoSkin.StopAllHapticFeedback();
-            Plugin.owoSkin.Feel("Death");
+                Plugin.owoSkin.LOG($"HeroInjured: {attid}");
+
+                if (attid != 0)
+                {
+                    Plugin.owoSkin.Feel("Impact");
+                }
+            }
         }
-    }
 
-    #endregion
+        /**
+         * When player gives up after death
+         */
+        [HarmonyPatch(typeof(UIScript.PCResurgencePanel_Logic), "GiveUp")]
+        public class OWO_OnGiveUp
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-    #region bug fixes
+                Plugin.owoSkin.StopHeartBeat();
+            }
+        }
 
-    /**
-     * When defeating boss, stop all continuous haptics
-     */
-    //[HarmonyPatch(typeof(UIScript.EffectPanel_logic), "DefeatBoss")]
-    //public class OWO_OnBossDefeat
-    //{
-    //    [HarmonyPostfix]
-    //    public static void Postfix()
-    //    {
-    //        if (Plugin.owoSkin.suitDisabled) return;
+        /**
+         * When player is NOT back to life, stop heartbeat
+         */
+        [HarmonyPatch(typeof(SalvationManager), "AskEnterWatch")]
+        public class OWO_OnNotRevived
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
 
-    //        Plugin.owoSkin.StopAllHapticFeedback();
-    //    }
-    //}
+                Plugin.owoSkin.StopHeartBeat();
+            }
+        }
 
-    #endregion
+        /**
+         * When player is back to life, stop heartbeat
+         */
+        [HarmonyPatch(typeof(NewPlayerManager), "PlayerRelife")]
+        public class OWO_OnBackToLife
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
+
+                Plugin.owoSkin.StopHeartBeat();
+            }
+        }
+
+        /**
+         * When healing item used
+         */
+        [HarmonyPatch(typeof(BoltBehavior.CAction1069), "Action")]
+        public class OWO_OnHealing
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
+
+                Plugin.owoSkin.Feel("Heal");
+            }
+        }
+
+        [HarmonyPatch(typeof(BoltBehavior.CAction4), "Action")]
+        public class OnPlayerDeath
+        {
+            [HarmonyPostfix]
+            public static void Postfix()
+            {
+                if (Plugin.owoSkin.suitDisabled) return;
+
+                Plugin.owoSkin.StopAllHapticFeedback();
+                Plugin.owoSkin.Feel("Death");
+            }
+        }
+
+        #endregion
+
+        #region bug fixes
+
+        /**
+         * When defeating boss, stop all continuous haptics
+         */
+        //[HarmonyPatch(typeof(UIScript.EffectPanel_logic), "DefeatBoss")]
+        //public class OWO_OnBossDefeat
+        //{
+        //    [HarmonyPostfix]
+        //    public static void Postfix()
+        //    {
+        //        if (Plugin.owoSkin.suitDisabled) return;
+
+        //        Plugin.owoSkin.StopAllHapticFeedback();
+        //    }
+        //}
+
+        #endregion
 
 
-    //[HarmonyPatch(typeof(AttackSkillBase), "SetFire")]
-    //public class SetFire
-    //{
-    //    private static int lastEquipedWeaponId;
+        //[HarmonyPatch(typeof(AttackSkillBase), "SetFire")]
+        //public class SetFire
+        //{
+        //    private static int lastEquipedWeaponId;
 
-    //    [HarmonyPostfix]
-    //    public static void Postfix(AttackSkillBase __instance)
-    //    {
-    //        if (__instance.ItemID != lastEquipedWeaponId)
-    //        {
-    //            Plugin.owoSkin.LOG($"SetFire - WeaponID: {__instance.ItemSID}");
-    //            lastEquipedWeaponId = __instance.ItemSID;
-    //        }
-    //    }
-    //}
+        //    [HarmonyPostfix]
+        //    public static void Postfix(AttackSkillBase __instance)
+        //    {
+        //        if (__instance.ItemID != lastEquipedWeaponId)
+        //        {
+        //            Plugin.owoSkin.LOG($"SetFire - WeaponID: {__instance.ItemSID}");
+        //            lastEquipedWeaponId = __instance.ItemSID;
+        //        }
+        //    }
+        //}    
 }
 
