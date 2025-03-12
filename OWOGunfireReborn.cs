@@ -110,22 +110,8 @@ namespace OWO_GunfireReborn
         [HarmonyBefore]
         public static void Postfix(int weaponid)
         {
-            Plugin.owoSkin.LOG($"OnSecRepeatingFire - ID:{weaponid}");
-
-            if (Plugin.owoSkin.suitDisabled) return;
-
-            switch (weaponid)
-            {
-                case 968: //Dinamite
-                    Plugin.owoSkin.Feel("Recoil R");
-                    break;
-                case 1314: //Arp
-                    Plugin.owoSkin.Feel("Recoil LR");
-                    break;
-                default:
-                    Plugin.owoSkin.Feel("Recoil R");
-                    break;
-            }
+           if (Plugin.owoSkin.suitDisabled) return;
+                Plugin.owoSkin.Feel("Recoil R");
         } 
     }
 
@@ -352,27 +338,27 @@ namespace OWO_GunfireReborn
                 {
                     //dog - Ao Bai
                     case 201:
-                        Plugin.owoSkin.Feel("Dog Dual");
+                        Plugin.owoSkin.Feel("Buff");
                         break;
-                    //cat - 
+                    //cat - Crown Prince
                     case 205:
-                        Plugin.owoSkin.Feel("Crown 1st");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     // monkey - Xing Zhe
                     case 214:
-                        Plugin.owoSkin.Feel("Xing 1st");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     //falcon - Qing Yan
                     case 206:
-                        Plugin.owoSkin.Feel("Qing 1st");
+                        Plugin.owoSkin.Feel("Jump Kick");
                         break;
 
                     //tiger - Lei Luo
                     case 207:
                         //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
-                        Plugin.owoSkin.Feel("Lei 1st");
+                        Plugin.owoSkin.Feel("Buff");
                         break;
 
                     //turtle - Qian Sui
@@ -381,7 +367,7 @@ namespace OWO_GunfireReborn
                         {
                             continuousPrimaryStart = true;
                             //start effect
-                            Plugin.owoSkin.Feel("Qian 1st");
+                            Plugin.owoSkin.Feel("Buff");
                             Plugin.owoSkin.StartQianPrimarySkill();
                         }
                         break;
@@ -400,7 +386,7 @@ namespace OWO_GunfireReborn
                         {
                             //stop effect
                             Plugin.owoSkin.StopLiPrimarySkill();
-                            Plugin.owoSkin.Feel("Li 1st Release");
+                            Plugin.owoSkin.Feel("Throw 2Hands");
                             kasuniState = 0;
                             break;
                         }
@@ -459,7 +445,7 @@ namespace OWO_GunfireReborn
                     OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                     //stop effect
                     Plugin.owoSkin.StopTurtlePrimarySkill();
-                    Plugin.owoSkin.Feel("Qian 1st");
+                    Plugin.owoSkin.Feel("Buff");
                 }
             }
         }
@@ -526,27 +512,27 @@ namespace OWO_GunfireReborn
                 {
                     //monkey - Xing Zhe
                     case 214:
-                        Plugin.owoSkin.Feel("Xing 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     //falcon - Qing Yan
                     case 206:
-                        Plugin.owoSkin.Feel("Qing 2nd");
+                        Plugin.owoSkin.Feel("Tail Blow");
                         break;
 
                     //tiger - Lei Luo
                     case 207:
-                        Plugin.owoSkin.Feel("Lei 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     //turtle - Qian
                     case 213:
-                        Plugin.owoSkin.Feel("Qian 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     //rabbit - Tao
                     case 212:
-                        Plugin.owoSkin.Feel("Tao 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     default:
@@ -574,16 +560,16 @@ namespace OWO_GunfireReborn
                 {
                     //cat
                     case 205:
-                        Plugin.owoSkin.Feel("Crown 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     //dog 
                     case 201:
-                        Plugin.owoSkin.Feel("Ao 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
                     // - Li
                     case 215:
-                        Plugin.owoSkin.Feel("Li 2nd");
+                        Plugin.owoSkin.Feel("Throw");
                         break;
 
                     default:

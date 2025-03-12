@@ -226,13 +226,13 @@ namespace OWO_GunfireReborn
             while (ChargingWeaponLIsActive || ChargingWeaponRIsActive)
             {
                 if (ChargingWeaponRIsActive)
-                    toFeel = "Charging R";
+                    toFeel = "Charge R";
 
                 if (CloudWeaverLIsActive)
-                    toFeel = "Charging L";
+                    toFeel = "Charge L";
 
                 if (ChargingWeaponLIsActive && ChargingWeaponRIsActive)
-                    toFeel = "Charging LR";
+                    toFeel = "Charge LR";
 
                 Feel(toFeel, 2);
                 await Task.Delay(1000);
@@ -322,7 +322,7 @@ namespace OWO_GunfireReborn
         {
             while (taoPrimarySkillIsActive)
             {
-                Feel("Tao 1st", 0);
+                Feel("Throw", 0);
                 await Task.Delay(600);
             }
         }
@@ -347,7 +347,7 @@ namespace OWO_GunfireReborn
         {
             while (qianPrimarySkillIsActive)
             {
-                Feel("Qian 1st", 0);
+                Feel("Buff", 0);
                 await Task.Delay(1000);
             }
         }
@@ -372,7 +372,7 @@ namespace OWO_GunfireReborn
         {
             while (liPrimarySkillIsActive)
             {
-                Feel("Li 1st", 0);
+                Feel("Throw 2Hands", 0);
                 await Task.Delay(500);
             }
         }
