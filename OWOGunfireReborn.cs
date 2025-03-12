@@ -312,13 +312,17 @@ namespace OWO_GunfireReborn
             public static bool continuousPrimaryStart = false;
             public static int kasuniState = 0;
 
-            [HarmonyPostfix]
+        public static bool activatedSkill = false;
+
+        [HarmonyPostfix]
             public static void Postfix()
             {
                 if (Plugin.owoSkin.suitDisabled)
                 {
                     return;
                 }
+
+                activatedSkill = true;
 
                 //heroIds switch cases
                 // Cat    -  Crown Prince
@@ -403,6 +407,7 @@ namespace OWO_GunfireReborn
                         break;
 
                     default:
+                        activatedSkill = false;
                         return;
                 }
             }
@@ -610,7 +615,12 @@ namespace OWO_GunfireReborn
 
                 //Plugin.owoSkin.Feel("Land After Jump", true, 0.3f);
                 Plugin.owoSkin.Feel("Jump Land", 1, 0.3f);
-            }
+                
+                if(HeroAttackCtrl.HeroObj.playerProp.SID == 206 && OWO_OnPrimarySkillOnDown.activatedSkill)
+                {
+                    Plugin.owoSkin.Feel("Jump Kick", 0);
+                }
+        }
         }
 
         /**
