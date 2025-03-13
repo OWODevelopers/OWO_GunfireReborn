@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using BepInEx.Unity.IL2CPP;
 using DYPublic;
+using UnityEngine;
 
 namespace OWO_GunfireReborn
 {
@@ -82,7 +83,7 @@ namespace OWO_GunfireReborn
         {
             if (Plugin.owoSkin.suitDisabled || __instance == null) return;
 
-            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
+            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID), 2);
         }
     }
 
@@ -97,7 +98,7 @@ namespace OWO_GunfireReborn
         {
             if (Plugin.owoSkin.suitDisabled || __instance == null) return;
 
-            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
+            Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID), 2);
         }
     }
 
@@ -111,7 +112,7 @@ namespace OWO_GunfireReborn
         public static void Postfix(int weaponid)
         {
            if (Plugin.owoSkin.suitDisabled) return;
-                Plugin.owoSkin.Feel("Recoil R");
+                Plugin.owoSkin.Feel("Recoil R", 2);
         } 
     }
 
@@ -126,7 +127,7 @@ namespace OWO_GunfireReborn
             {
                 if (Plugin.owoSkin.suitDisabled || __instance == null) return;
 
-                Plugin.owoSkin.Feel("Charge " + Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.Feel("Charge " + Plugin.getHandSide(__instance.ItemID), 2);
             }
         }
 
@@ -166,7 +167,7 @@ namespace OWO_GunfireReborn
                     //stop thread
                     Plugin.owoSkin.StopChargingWeapon(Plugin.getHandSide(__instance.ItemID) == "R");
 
-                    Plugin.owoSkin.Feel("Charged Release " + Plugin.getHandSide(__instance.ItemID));
+                    Plugin.owoSkin.Feel("Charged Release " + Plugin.getHandSide(__instance.ItemID), 2);
                 }
             }
         }
@@ -224,7 +225,7 @@ namespace OWO_GunfireReborn
                 }
                 if (__instance.ItemSID == 1306)
                 {
-                    Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
+                    Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID), 2);
                 }
             }
         }
@@ -277,7 +278,7 @@ namespace OWO_GunfireReborn
                 {
                     return;
                 }
-                Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID));
+                Plugin.owoSkin.Feel("Recoil " + Plugin.getHandSide(__instance.ItemID), 2);
             }
         }
 
@@ -342,27 +343,27 @@ namespace OWO_GunfireReborn
                 {
                     //dog - Ao Bai
                     case 201:
-                        Plugin.owoSkin.Feel("Buff");
+                        Plugin.owoSkin.Feel("Buff", 3);
                         break;
                     //cat - Crown Prince
                     case 205:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     // monkey - Xing Zhe
                     case 214:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     //falcon - Qing Yan
                     case 206:
-                        Plugin.owoSkin.Feel("Jump Kick");
+                        //Plugin.owoSkin.Feel("Jump Kick");
                         break;
 
                     //tiger - Lei Luo
                     case 207:
                         //Plugin.owoSkin.Feel("PrimarySkillTigerVest", true, 4.0f);
-                        Plugin.owoSkin.Feel("Buff");
+                        Plugin.owoSkin.Feel("Buff", 3);
                         break;
 
                     //turtle - Qian Sui
@@ -371,7 +372,7 @@ namespace OWO_GunfireReborn
                         {
                             continuousPrimaryStart = true;
                             //start effect
-                            Plugin.owoSkin.Feel("Buff");
+                            Plugin.owoSkin.Feel("Buff", 3);
                             Plugin.owoSkin.StartQianPrimarySkill();
                         }
                         break;
@@ -390,7 +391,7 @@ namespace OWO_GunfireReborn
                         {
                             //stop effect
                             Plugin.owoSkin.StopLiPrimarySkill();
-                            Plugin.owoSkin.Feel("Throw 2Hands");
+                            Plugin.owoSkin.Feel("Throw 2Hands", 3);
                             kasuniState = 0;
                             break;
                         }
@@ -450,7 +451,7 @@ namespace OWO_GunfireReborn
                     OWO_OnPrimarySkillOnDown.continuousPrimaryStart = false;
                     //stop effect
                     Plugin.owoSkin.StopTurtlePrimarySkill();
-                    Plugin.owoSkin.Feel("Buff");
+                    Plugin.owoSkin.Feel("Buff", 3);
                 }
             }
         }
@@ -517,27 +518,27 @@ namespace OWO_GunfireReborn
                 {
                     //monkey - Xing Zhe
                     case 214:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     //falcon - Qing Yan
                     case 206:
-                        Plugin.owoSkin.Feel("Tail Blow");
+                        Plugin.owoSkin.Feel("Tail Blow", 3);
                         break;
 
                     //tiger - Lei Luo
                     case 207:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     //turtle - Qian
                     case 213:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     //rabbit - Tao
                     case 212:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     default:
@@ -565,16 +566,16 @@ namespace OWO_GunfireReborn
                 {
                     //cat
                     case 205:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     //dog 
                     case 201:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
                     // - Li
                     case 215:
-                        Plugin.owoSkin.Feel("Throw");
+                        Plugin.owoSkin.Feel("Throw", 3);
                         break;
 
                     default:
@@ -597,8 +598,7 @@ namespace OWO_GunfireReborn
             public static void Postfix()
             {
                 if (Plugin.owoSkin.suitDisabled) return;
-                //Plugin.owoSkin.Feel("OnJump", true, 0.5f);
-                Plugin.owoSkin.Feel("Jump", 2, 0.5f);
+                Plugin.owoSkin.Feel("Jump", 2);
             }
         }
 
@@ -608,19 +608,21 @@ namespace OWO_GunfireReborn
         [HarmonyPatch(typeof(HeroMoveManager), "OnLand")]
         public class OWO_OnLanding
         {
-            [HarmonyPostfix]
-            public static void Postfix()
-            {
-                if (Plugin.owoSkin.suitDisabled) return;
-
-                //Plugin.owoSkin.Feel("Land After Jump", true, 0.3f);
-                Plugin.owoSkin.Feel("Jump Land", 1, 0.3f);
-                
-                if(HeroAttackCtrl.HeroObj.playerProp.SID == 206 && OWO_OnPrimarySkillOnDown.activatedSkill)
+        [HarmonyPostfix]
+        public static void Postfix()
+        {
+            if (Plugin.owoSkin.suitDisabled) return;
+                if (HeroAttackCtrl.HeroObj.playerProp.SID == 206 && OWO_OnPrimarySkillOnDown.activatedSkill)
                 {
-                    Plugin.owoSkin.Feel("Jump Kick", 0);
+                    Plugin.owoSkin.Feel("Jump Land", 1);
+                    Plugin.owoSkin.Feel("Jump Kick", 3);
                 }
-        }
+                else
+                {
+                    Plugin.owoSkin.Feel("Jump Land", 1);
+                }
+            }
+        
         }
 
         /**
@@ -636,7 +638,7 @@ namespace OWO_GunfireReborn
 
                 if (SkillBolt.CServerArg.IsHeroCtrl(skill))
                 {
-                    Plugin.owoSkin.Feel("Dash");
+                    Plugin.owoSkin.Feel("Dash", 3);
                 }
             }
         }
@@ -656,7 +658,7 @@ namespace OWO_GunfireReborn
             {
                 if (Plugin.owoSkin.suitDisabled) return;
 
-                Plugin.owoSkin.Feel("Shield Break");
+                Plugin.owoSkin.Feel("Shield Break", 4);
             }
         }
 
@@ -705,15 +707,15 @@ namespace OWO_GunfireReborn
         public class OWO_OnInjured
         {
             [HarmonyPostfix]
-            public static void Postfix(int attid)
+            public static void Postfix(int attid, Transform atttran)
             {
                 if (Plugin.owoSkin.suitDisabled) return;
 
-                Plugin.owoSkin.LOG($"HeroInjured: {attid}");
-
-                if (attid != 0)
+                //Plugin.owoSkin.LOG($"HeroInjured: {attid}");
+            
+            if (attid != 0)
                 {
-                    Plugin.owoSkin.Feel("Impact");
+                    Plugin.owoSkin.Feel("Impact",4);
                 }
             }
         }
@@ -774,7 +776,7 @@ namespace OWO_GunfireReborn
             {
                 if (Plugin.owoSkin.suitDisabled) return;
 
-                Plugin.owoSkin.Feel("Heal");
+                Plugin.owoSkin.Feel("Heal", 1);
             }
         }
 
@@ -787,7 +789,7 @@ namespace OWO_GunfireReborn
                 if (Plugin.owoSkin.suitDisabled) return;
 
                 Plugin.owoSkin.StopAllHapticFeedback();
-                Plugin.owoSkin.Feel("Death");
+                Plugin.owoSkin.Feel("Death", 5);
             }
         }
 

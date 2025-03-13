@@ -322,7 +322,7 @@ namespace OWO_GunfireReborn
         {
             while (taoPrimarySkillIsActive)
             {
-                Feel("Throw", 0);
+                Feel("Throw", 3);
                 await Task.Delay(600);
             }
         }
@@ -347,7 +347,7 @@ namespace OWO_GunfireReborn
         {
             while (qianPrimarySkillIsActive)
             {
-                Feel("Buff", 0);
+                Feel("Buff", 3);
                 await Task.Delay(1000);
             }
         }
@@ -372,7 +372,7 @@ namespace OWO_GunfireReborn
         {
             while (liPrimarySkillIsActive)
             {
-                Feel("Throw 2Hands", 0);
+                Feel("Throw 2Hands", 3);
                 await Task.Delay(500);
             }
         }
