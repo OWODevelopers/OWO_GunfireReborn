@@ -9,6 +9,8 @@ This mod is based on the work of [Asienth](https://github.com/Astienth/gunfire-r
 - Disable automatic updates for the game in Steam  
 note: all players must have the same version in order to play online!
 ### Install the mod
+- Download [BepInEx 6.0.0-pre.2](https://github.com/BepInEx/BepInEx/releases/tag/v6.0.0-pre.2)
+- Extract the BepinEx zip data on the same folder of the game and run the game once.
 - Download the [latest release](https://github.com/OWODevelopers/OWO_GunfireReborn/releases/latest) of this mod
 - Extract the mod zip and place all files and the owo folder into the BepInEx\Plugins directory of your game installation.
 - Enjoy your inmersive experience! 😊
