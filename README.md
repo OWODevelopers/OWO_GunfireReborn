@@ -3,13 +3,13 @@ This mod is based on the work of [Asienth](https://github.com/Astienth/gunfire-r
 
 ## Installation
 ### Downgrade the game to the latest compatible version (v1.0.9.1)
-- Ejecute on windows `steam://open/console`
+- Ejecute on windows pressing "Windows_key + R" and use the command `steam://open/console`
 - Run inside Steam Console this command `download_depot 1217060 1217061 969403333909649972`
 - Replace the game files with the download from C:\Program Files (x86)\Steam\steamapps\content\app_1217060\depot_1217061
 - Disable automatic updates for the game in Steam  
 note: all players must have the same version in order to play online!
 ### Install the mod
-- Download [BepInEx 6.0.0-pre.2](https://github.com/BepInEx/BepInEx/releases/tag/v6.0.0-pre.2)
+- Download [BepInEx 6.0.0-733](https://builds.bepinex.dev/projects/bepinex_be/733/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.733%2B995f049.zip)
 - Extract the BepinEx zip data on the same folder of the game and run the game once.
 - Download the [latest release](https://github.com/OWODevelopers/OWO_GunfireReborn/releases/latest) of this mod
 - Extract the mod zip and place all files and the owo folder into the BepInEx\Plugins directory of your game installation.
