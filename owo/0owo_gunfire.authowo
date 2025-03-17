@@ -8,15 +8,15 @@
 7~Heal~100,2,65,200,0,0,Hit|3%100,2%100,9%100,8%100&70,1,65,0,0,0,Hit|3%41,2%43,9%44,8%48,6%100,7%100,1%100,0%100&70,2,65,0,200,0,Hit|1%100,0%100,6%100,7%100~health-0~Health#
 8~Recoil L~11,1,70,0,0,0,Hit|5%100~weapon-2~Weapons#
 9~Recoil R~11,1,70,0,0,0,Hit|4%100~weapon-2~Weapons#
-10~Charge L~50,4,60,100,0,0,Hit|5%100~weapon-0~Weapons#
-11~Charge R~50,4,60,100,0,0,Hit|4%100~weapon-0~Weapons#
-12~Charge LR~50,4,60,100,0,0,Hit|5%100,4%100~weapon-0~Weapons#
-13~Continuous L~60,4,50,0,0,0,Hit|5%100~weapon-0~Weapons#
-14~Continuous R~60,4,50,0,0,0,Hit|4%100~weapon-0~Weapons#
-15~Continuous LR~60,4,50,0,0,0,Hit|5%100,4%100~weapon-0~Weapons#
-16~Charged Release R~50,3,80,0,200,0,Hit|4%100~weapon-0~Weapons#
-17~Charged Release L~50,3,80,0,200,0,Hit|5%100~weapon-0~Weapons#
-18~Buff~70,4,70,300,0,0,Lower Body|2%100,3%100,9%100,8%100,7%100,6%100,0%100,1%100~weapon-0~Skills#
-19~Throw~100,2,70,100,100,0,Hit|5%100~weapon-0~Skills#
-20~Tail Blow~100,2,70,100,0,0,Spin|2%100,3%100,9%100,8%100~weapon-0~Skills#
-21~Jump Kick~60,2,70,100,0,0,Hit|3%100,2%100,9%100,8%100&100,1,70,0,0,0,Hit|3%100,2%100~weapon-0~Skills
+10~Charge L~50,4,60,100,0,0,Hit|5%100~weapon-2~Weapons#
+11~Charge R~50,4,60,100,0,0,Hit|4%100~weapon-2~Weapons#
+12~Charge LR~50,4,60,100,0,0,Hit|5%100,4%100~weapon-2~Weapons#
+13~Continuous L~60,4,50,0,0,0,Hit|5%100~weapon-2~Weapons#
+14~Continuous R~60,4,50,0,0,0,Hit|4%100~weapon-2~Weapons#
+15~Continuous LR~60,4,50,0,0,0,Hit|5%100,4%100~weapon-2~Weapons#
+16~Charged Release R~50,3,80,0,200,0,Hit|4%100~weapon-2~Weapons#
+17~Charged Release L~50,3,80,0,200,0,Hit|5%100~weapon-2~Weapons#
+18~Buff~70,4,70,300,0,0,Lower Body|2%100,3%100,9%100,8%100,7%100,6%100,0%100,1%100~alert-4~Skills#
+19~Throw~100,2,70,100,100,0,Hit|5%100~magic-5~Skills#
+20~Tail Blow~100,2,70,100,0,0,Spin|2%100,3%100,9%100,8%100~magic-3~Skills#
+21~Jump Kick~60,2,70,100,0,0,Hit|3%100,2%100,9%100,8%100&100,1,70,0,0,0,Hit|3%100,2%100~interaction-1~Skills
